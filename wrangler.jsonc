@@ -13,7 +13,7 @@
     {
       "binding": "DB",
       "database_name": "village-atlas",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "c361d210-fe60-40c1-8a95-7f6df8f9a4fb",
       "migrations_dir": "migrations",
     },
   ],
