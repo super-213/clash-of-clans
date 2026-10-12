@@ -1,0 +1,148 @@
+name: Collect catalog
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Monthly sync, historical continuation, or explicit front-page refresh
+        type: choice
+        options: [sync, backfill, incremental]
+        default: sync
+      sources:
+        description: all or comma-separated source IDs
+        type: string
+        default: all
+      levels:
+        description: Optional comma-separated Town Hall levels
+        type: string
+        default: ''
+      limit:
+        description: Optional manual record budget; empty or 0 means unlimited
+        type: string
+        default: ''
+      max_pages:
+        description: Optional manual page budget; empty or 0 means unlimited
+        type: string
+        default: ''
+  schedule:
+    # UTC 00:17 on the 1st = Asia/Shanghai 08:17 on the 1st.
+    - cron: '17 0 1 * *'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.sources.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select configured sources
+        id: sources
+        env:
+          COLLECT_SOURCES: ${{ inputs.sources || 'all' }}
+        run: |
+          python3 - <<'PY'
+          import json, os, tomllib
+          from pathlib import Path
+          available = [s['id'] for s in tomllib.loads(Path('crawler/sources.toml').read_text())['sources']]
+          selection = os.environ['COLLECT_SOURCES']
+          selected = available if selection == 'all' else list(dict.fromkeys(selection.split(',')))
+          if not selected or any(s not in available for s in selected):
+              raise SystemExit('Unknown source')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('matrix=' + json.dumps({'source': selected}) + '\n')
+          PY
+  collect:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    concurrency:
+      group: catalog-crawler-${{ matrix.source }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: data/${{ matrix.source }}/
+          key: crawler-state-v3-${{ matrix.source }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: crawler-state-v3-${{ matrix.source }}-
+      - name: Recover durable monthly checkpoints
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COLLECT_SOURCE: ${{ matrix.source }}
+        run: |
+          # Actions caches can expire between monthly runs. The 90-day artifact
+          # is authoritative for catalog, delivery receipts, and cursors.
+          gh api --paginate --slurp "/repos/$GITHUB_REPOSITORY/actions/artifacts?per_page=100" > "$RUNNER_TEMP/catalog-artifacts.json"
+          artifact_id=$(python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          pages = json.loads((Path(os.environ['RUNNER_TEMP']) / 'catalog-artifacts.json').read_text())
+          prefix = 'catalog-' + os.environ['COLLECT_SOURCE'] + '-'
+          matches = [a for page in pages for a in page['artifacts'] if a['name'].startswith(prefix) and not a['expired']]
+          if matches:
+              print(max(matches, key=lambda a: a['created_at'])['id'])
+          PY
+          )
+          if [[ -n "$artifact_id" ]]; then
+            gh api "/repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id/zip" > "$RUNNER_TEMP/catalog-state.zip"
+            python3 - <<'PY'
+          import os, zipfile
+          from pathlib import Path
+          target = Path('data') / os.environ['COLLECT_SOURCE']
+          target.mkdir(parents=True, exist_ok=True)
+          with zipfile.ZipFile(Path(os.environ['RUNNER_TEMP']) / 'catalog-state.zip') as archive:
+              names = {Path(name).name: name for name in archive.namelist()}
+              if 'catalog.json' not in names:
+                  raise SystemExit('Checkpoint artifact missing catalog.json')
+              if 'crawl-state.json' not in names:
+                  (target / 'crawl-state.json').unlink(missing_ok=True)
+              for name in archive.namelist():
+                  filename = Path(name).name
+                  if filename in ('catalog.json', 'crawl-state.json'):
+                      (target / filename).write_bytes(archive.read(name))
+          PY
+          fi
+      - name: Collect and publish
+        id: crawl
+        env:
+          COLLECT_MODE: ${{ inputs.mode || 'sync' }}
+          COLLECT_SOURCE: ${{ matrix.source }}
+          COLLECT_LEVELS: ${{ inputs.levels }}
+          COLLECT_LIMIT: ${{ inputs.limit }}
+          COLLECT_MAX_PAGES: ${{ inputs.max_pages }}
+          ATLAS_API_URL: ${{ vars.ATLAS_API_URL }}
+          ATLAS_INGEST_TOKEN: ${{ secrets.ATLAS_INGEST_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          R2_BUCKET_NAME: village-atlas-images
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        run: |
+          args=(--mode "$COLLECT_MODE" --source "$COLLECT_SOURCE" --publish --max-seconds 19800)
+          args+=(--output "../data/$COLLECT_SOURCE/catalog.json" --cache "../data/$COLLECT_SOURCE/http-cache.sqlite")
+          if [[ -n "$COLLECT_LEVELS" ]]; then args+=(--levels "$COLLECT_LEVELS"); fi
+          if [[ -n "$COLLECT_LIMIT" ]]; then args+=(--limit "$COLLECT_LIMIT"); fi
+          if [[ -n "$COLLECT_MAX_PAGES" ]]; then args+=(--max-pages "$COLLECT_MAX_PAGES"); fi
+          uv run --directory crawler --frozen python -m atlas "${args[@]}"
+      - name: Save checkpoints even after a partial failure
+        if: always() && steps.crawl.outcome != 'skipped'
+        uses: actions/cache/save@v4
+        with:
+          path: data/${{ matrix.source }}/
+          key: crawler-state-v3-${{ matrix.source }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Preserve run metadata
+        if: always() && steps.crawl.outcome != 'skipped'
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-${{ matrix.source }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            data/${{ matrix.source }}/catalog.json
+            data/${{ matrix.source }}/crawl-state.json
+          retention-days: 90
+          if-no-files-found: ignore

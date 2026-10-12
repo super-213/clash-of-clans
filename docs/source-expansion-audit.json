@@ -1,0 +1,206 @@
+{
+  "observations": 493,
+  "validated": true,
+  "catalog": {
+    "levels": [
+      {
+        "level": 18,
+        "bases": 51,
+        "armies": 5
+      },
+      {
+        "level": 17,
+        "bases": 30,
+        "armies": 4
+      },
+      {
+        "level": 16,
+        "bases": 35,
+        "armies": 4
+      },
+      {
+        "level": 15,
+        "bases": 35,
+        "armies": 4
+      },
+      {
+        "level": 14,
+        "bases": 33,
+        "armies": 4
+      },
+      {
+        "level": 13,
+        "bases": 23,
+        "armies": 4
+      },
+      {
+        "level": 12,
+        "bases": 23,
+        "armies": 4
+      },
+      {
+        "level": 11,
+        "bases": 24,
+        "armies": 4
+      },
+      {
+        "level": 10,
+        "bases": 22,
+        "armies": 3
+      },
+      {
+        "level": 9,
+        "bases": 22,
+        "armies": 3
+      },
+      {
+        "level": 8,
+        "bases": 19,
+        "armies": 3
+      },
+      {
+        "level": 7,
+        "bases": 18,
+        "armies": 0
+      },
+      {
+        "level": 6,
+        "bases": 24,
+        "armies": 0
+      },
+      {
+        "level": 5,
+        "bases": 24,
+        "armies": 0
+      },
+      {
+        "level": 4,
+        "bases": 24,
+        "armies": 0
+      },
+      {
+        "level": 3,
+        "bases": 14,
+        "armies": 0
+      },
+      {
+        "level": 2,
+        "bases": 0,
+        "armies": 0
+      },
+      {
+        "level": 1,
+        "bases": 0,
+        "armies": 0
+      }
+    ],
+    "total_bases": 421,
+    "total_armies": 42,
+    "last_sync": "2026-10-12T09:46:59.181Z"
+  },
+  "sources": [
+    {
+      "id": "blueprint",
+      "name": "Blueprint CoC",
+      "home_url": "https://blueprintcoc.com",
+      "enabled": 1,
+      "status": "success",
+      "finished_at": "2026-10-12T09:44:30.161358Z",
+      "discovered": 1,
+      "ingested": 0,
+      "entries": 1
+    },
+    {
+      "id": "clash-layouts",
+      "name": "Clash of Clans Layouts",
+      "home_url": "https://clashofclans-layouts.com",
+      "enabled": 1,
+      "status": "success",
+      "finished_at": "2026-10-12T09:46:59.059294Z",
+      "discovered": 14,
+      "ingested": 0,
+      "entries": 210
+    },
+    {
+      "id": "clashbaselink",
+      "name": "ClashBaseLink",
+      "home_url": "https://clashbaselink.com",
+      "enabled": 1,
+      "status": "success",
+      "finished_at": "2026-10-12T09:37:07.059862Z",
+      "discovered": 151,
+      "ingested": 0,
+      "entries": 151
+    },
+    {
+      "id": "clashcodes",
+      "name": "Clashcodes 中文站",
+      "home_url": "https://clashcodes.com",
+      "enabled": 1,
+      "status": "success",
+      "finished_at": "2026-10-12T09:45:55.725973Z",
+      "discovered": 58,
+      "ingested": 0,
+      "entries": 60
+    },
+    {
+      "id": "clashest",
+      "name": "Clashest",
+      "home_url": "https://clashest.com",
+      "enabled": 1,
+      "status": "success",
+      "finished_at": "2026-10-12T09:37:29.527972Z",
+      "discovered": 41,
+      "ingested": 0,
+      "entries": 41
+    }
+  ],
+  "th18Total": 51,
+  "firstPageItems": 12,
+  "secondPageItems": 12,
+  "backfill": {
+    "clash-layouts:18:https://clashofclans-layouts.com/zh/plans/th_18/": {
+      "next_url": "https://clashofclans-layouts.com/zh/plans/th_18/page_4/",
+      "pending": [
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_175.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_174.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/defence_81.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_173.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/defence_80.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_172.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_171.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/defence_79.html",
+          "done": []
+        }
+      ],
+      "seen_pages": [
+        "https://clashofclans-layouts.com/zh/plans/th_18/",
+        "https://clashofclans-layouts.com/zh/plans/th_18/page_2/",
+        "https://clashofclans-layouts.com/zh/plans/th_18/page_3/"
+      ],
+      "complete": false
+    }
+  }
+}

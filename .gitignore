@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.wrangler/
+.dev.vars
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+data/
+*.log
+!.env.example

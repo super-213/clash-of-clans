@@ -1,0 +1,726 @@
+import { useEffect, useRef, useState } from 'react';
+import {
+  ArrowDownUp,
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  ChevronDown,
+  ExternalLink,
+  Heart,
+  Layers3,
+  Menu,
+  Search,
+  Shield,
+  Swords,
+  X,
+  Castle,
+  Radio,
+  RefreshCw,
+} from 'lucide-react';
+import type { Catalog, Entry } from '../shared/schema';
+import { date, purposes } from './format';
+import { Dialog } from './components/Media';
+import { EntryCard } from './components/EntryCard';
+import { EntryDetail } from './components/EntryDetail';
+
+async function api<T>(path: string, signal?: AbortSignal): Promise<T> {
+  const response = await fetch(path, { signal });
+  if (!response.ok) throw new Error(`请求失败 (${response.status})`);
+  return response.json();
+}
+function readSaved(): string[] {
+  try {
+    return JSON.parse(localStorage.getItem('atlas:saved') || '[]')
+      .filter((x: unknown) => typeof x === 'string')
+      .slice(0, 200);
+  } catch {
+    return [];
+  }
+}
+type Source = {
+  id: string;
+  name: string;
+  home_url: string;
+  enabled: number;
+  status: string | null;
+  finished_at: string | null;
+  entries: number;
+};
+const noSavedQuery: string[] = [];
+
+export function App() {
+  const initial = new URLSearchParams(location.search);
+  const [kind, setKind] = useState<'base' | 'army'>(
+    initial.get('kind') === 'army' ? 'army' : 'base',
+  );
+  const [hall, setHall] = useState<number | null>(
+    /^\d+$/.test(initial.get('th') || '')
+      ? Number(initial.get('th'))
+      : initial.has('kind')
+        ? null
+        : 18,
+  );
+  const [purpose, setPurpose] = useState(initial.get('purpose') || 'all');
+  const [search, setSearch] = useState(initial.get('q') || '');
+  const [query, setQuery] = useState(search);
+  const [sort, setSort] = useState('latest');
+  const [page, setPage] = useState(1);
+  const [catalog, setCatalog] = useState<Catalog | null>(null);
+  const [items, setItems] = useState<Entry[]>([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [saved, setSaved] = useState<string[]>(readSaved);
+  const [savedOnly, setSavedOnly] = useState(false);
+  const savedForQuery = savedOnly ? saved : noSavedQuery;
+  const [selected, setSelected] = useState<Entry | null>(null);
+  const [toast, setToast] = useState('');
+  const [mobileNav, setMobileNav] = useState(false);
+  const [compactNav, setCompactNav] = useState(
+    () => window.matchMedia('(max-width: 1023px)').matches,
+  );
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const [showSources, setShowSources] = useState(false);
+  const [sources, setSources] = useState<Source[]>([]);
+  const [sourceError, setSourceError] = useState('');
+  const [reload, setReload] = useState(0);
+  const pageSize = 12;
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 1023px)');
+    const update = () => {
+      setCompactNav(media.matches);
+      if (!media.matches) setMobileNav(false);
+    };
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    api<Catalog>('/api/catalog', controller.signal)
+      .then(setCatalog)
+      .catch(() => {});
+    return () => controller.abort();
+  }, [reload]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setQuery(search);
+      setPage(1);
+    }, 280);
+    return () => clearTimeout(timer);
+  }, [search]);
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(''), 2600);
+    return () => clearTimeout(t);
+  }, [toast]);
+  useEffect(() => {
+    const params = new URLSearchParams({ kind });
+    if (hall) params.set('th', String(hall));
+    if (purpose !== 'all') params.set('purpose', purpose);
+    if (query) params.set('q', query);
+    history.replaceState(null, '', '?' + params);
+    const controller = new AbortController();
+    setLoading(true);
+    setError('');
+    const load = async () => {
+      if (savedOnly) {
+        const all = await Promise.all(
+          savedForQuery.map((id) =>
+            api<Entry>(`/api/entries/${id}`, controller.signal).catch((err) => {
+              if (err.message.includes('(404)')) return null;
+              throw err;
+            }),
+          ),
+        );
+        const filtered = all.filter(
+          (entry): entry is Entry =>
+            !!entry &&
+            entry.kind === kind &&
+            (!hall || entry.town_hall === hall) &&
+            (purpose === 'all' || entry.purpose === purpose) &&
+            (!query ||
+              `${entry.title} ${entry.tags.join(' ')}`
+                .toLowerCase()
+                .includes(query.toLowerCase())),
+        );
+        filtered.sort((a, b) =>
+          sort === 'latest'
+            ? b.updated_at.localeCompare(a.updated_at)
+            : a.updated_at.localeCompare(b.updated_at),
+        );
+        return {
+          items: filtered.slice((page - 1) * pageSize, page * pageSize),
+          total: filtered.length,
+        };
+      }
+      params.set('page', String(page));
+      params.set('limit', String(pageSize));
+      params.set('sort', sort);
+      return api<{ items: Entry[]; total: number }>(
+        '/api/entries?' + params,
+        controller.signal,
+      );
+    };
+    load()
+      .then((result) => {
+        if (!controller.signal.aborted) {
+          setItems(result.items);
+          setTotal(result.total);
+        }
+      })
+      .catch((err) => {
+        if (!controller.signal.aborted) setError(err.message);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+    return () => controller.abort();
+  }, [
+    kind,
+    hall,
+    purpose,
+    query,
+    sort,
+    page,
+    savedOnly,
+    savedForQuery,
+    reload,
+  ]);
+
+  useEffect(() => {
+    if (!showSources) return;
+    const controller = new AbortController();
+    setSourceError('');
+    api<{ items: Source[] }>('/api/sources', controller.signal)
+      .then((result) => setSources(result.items))
+      .catch((err) => {
+        if (!controller.signal.aborted) setSourceError(err.message);
+      });
+    return () => controller.abort();
+  }, [showSources]);
+
+  function changeKind(next: 'base' | 'army') {
+    setKind(next);
+    setPurpose('all');
+    setPage(1);
+  }
+  function changeHall(next: number | null) {
+    setHall(next);
+    setPage(1);
+    setMobileNav(false);
+  }
+  function toggleSaved(id: string) {
+    const next = saved.includes(id)
+      ? saved.filter((x) => x !== id)
+      : [id, ...saved].slice(0, 200);
+    setSaved(next);
+    try {
+      localStorage.setItem('atlas:saved', JSON.stringify(next));
+      setToast(
+        saved.includes(id) ? '已取消收藏' : '已收藏，可在“我的收藏”查看',
+      );
+    } catch {
+      setToast('浏览器无法保存收藏，请检查存储设置');
+    }
+  }
+  function openCollection(onlySaved: boolean) {
+    setSavedOnly(onlySaved);
+    setPage(1);
+    setMobileNav(false);
+    if (onlySaved) {
+      setHall(null);
+      setPurpose('all');
+      setSearch('');
+    }
+  }
+  function changePage(next: number) {
+    setPage(next);
+    resultsRef.current?.scrollIntoView({ block: 'start' });
+    resultsRef.current?.focus({ preventScroll: true });
+  }
+  async function copy(entry: Entry) {
+    if (!entry.game_link) return;
+    try {
+      await navigator.clipboard.writeText(entry.game_link);
+      setToast('游戏链接已复制');
+    } catch {
+      setSelected(entry);
+      setToast('无法自动复制，请在详情中选择链接文本');
+    }
+  }
+  const selectedCount = catalog?.levels.find((x) => x.level === hall);
+  const totalOfKind =
+    kind === 'base' ? catalog?.total_bases : catalog?.total_armies;
+
+  const navigation = (
+    <>
+      <a className="brand" href="/" aria-label="阵研所首页">
+        <span className="brand-mark">
+          <Castle size={25} strokeWidth={2.1} />
+        </span>
+        <span>
+          阵研所<small>VILLAGE ATLAS</small>
+        </span>
+      </a>
+      <div className="sidebar-section">我的资料库</div>
+      <button
+        className={`side-link ${!savedOnly ? 'active' : ''}`}
+        onClick={() => openCollection(false)}
+      >
+        <Layers3 size={18} />
+        探索资料库
+        <ArrowRight className="side-arrow" size={15} />
+      </button>
+      <button
+        className={`side-link ${savedOnly ? 'active' : ''}`}
+        onClick={() => openCollection(true)}
+      >
+        <Heart size={18} />
+        我的收藏<span className="count">{saved.length}</span>
+      </button>
+      <div className="sidebar-section hall-label">
+        大本营等级<span>家乡村庄</span>
+      </div>
+      <button
+        className={`hall-button hall-all ${hall === null ? 'selected' : ''}`}
+        onClick={() => changeHall(null)}
+      >
+        <span>全部等级</span>
+        <span>{totalOfKind ?? '—'}</span>
+      </button>
+      <div className="hall-list">
+        {(
+          catalog?.levels ??
+          Array.from({ length: 18 }, (_, i) => ({
+            level: 18 - i,
+            bases: 0,
+            armies: 0,
+          }))
+        ).map((level) => (
+          <button
+            key={level.level}
+            className={`hall-button ${hall === level.level ? 'selected' : ''}`}
+            onClick={() => changeHall(level.level)}
+          >
+            <span className="hall-symbol">
+              <Castle size={16} />
+            </span>
+            <span>
+              <b>TH {level.level}</b>
+              <small>{level.level} 级大本营</small>
+            </span>
+            <span className="hall-count">
+              {kind === 'base' ? level.bases : level.armies}
+            </span>
+          </button>
+        ))}
+      </div>
+      <div className="sidebar-bottom">
+        <span className="online-dot" />
+        <span>为每一位首领整理</span>
+        <button
+          className="icon-button"
+          onClick={() => {
+            setMobileNav(false);
+            setShowSources(true);
+          }}
+          aria-label="查看数据来源"
+        >
+          <Radio size={16} />
+        </button>
+      </div>
+    </>
+  );
+
+  return (
+    <div className="app">
+      {compactNav ? (
+        mobileNav && (
+          <Dialog
+            close={() => setMobileNav(false)}
+            label="浏览导航"
+            className="navigation-dialog"
+          >
+            <nav className="drawer-navigation" aria-label="资料库导航">
+              {navigation}
+            </nav>
+          </Dialog>
+        )
+      ) : (
+        <aside className="sidebar">{navigation}</aside>
+      )}
+
+      <div className="workspace">
+        <header className="topbar">
+          <div className="breadcrumb">
+            <button
+              className="icon-button mobile-menu"
+              aria-label="展开导航"
+              aria-haspopup="dialog"
+              aria-expanded={mobileNav}
+              onClick={() => setMobileNav(true)}
+            >
+              <Menu size={22} />
+            </button>
+            <span>家乡村庄</span>
+            <span className="slash">/</span>
+            <strong>{savedOnly ? '我的收藏' : '探索资料库'}</strong>
+          </div>
+          <button
+            className="source-button"
+            onClick={() => setShowSources(true)}
+          >
+            <Radio size={14} />
+            <span>数据来源</span>
+            <ExternalLink size={12} />
+          </button>
+        </header>
+        <main>
+          {compactNav && (
+            <div className="compact-navigation">
+              <label className="hall-select">
+                <Castle size={18} />
+                <span>大本营</span>
+                <select
+                  aria-label="选择大本营等级"
+                  value={hall ?? 'all'}
+                  onChange={(e) =>
+                    changeHall(
+                      e.target.value === 'all' ? null : Number(e.target.value),
+                    )
+                  }
+                >
+                  <option value="all">全部等级</option>
+                  {(
+                    catalog?.levels ??
+                    Array.from({ length: 18 }, (_, i) => ({ level: 18 - i }))
+                  ).map((level) => (
+                    <option key={level.level} value={level.level}>
+                      TH {level.level}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button
+                className={`collection-shortcut ${savedOnly ? 'selected' : ''}`}
+                aria-pressed={savedOnly}
+                onClick={() => openCollection(!savedOnly)}
+              >
+                {savedOnly ? <Layers3 size={18} /> : <Heart size={18} />}
+                {savedOnly ? '全部资料' : `收藏 ${saved.length}`}
+              </button>
+            </div>
+          )}
+          <div className="page-heading">
+            <div>
+              <div className="eyebrow">
+                <span /> THE STRATEGY LIBRARY
+              </div>
+              <h1>{savedOnly ? '我的收藏' : '阵型与配兵'}</h1>
+              <p>找到适合你的阵型，带上下一场的配兵。</p>
+            </div>
+            <div className="sync-status">
+              <span className="online-dot" />
+              最近采集 <time>{date(catalog?.last_sync ?? null)}</time>
+              <small>保留原始来源 · 持续整理</small>
+            </div>
+          </div>
+
+          <section className="level-banner" aria-label="当前等级">
+            <div className="banner-label">
+              <span className="banner-icon">
+                <Castle size={32} />
+              </span>
+              <div>
+                <small>HOME VILLAGE</small>
+                <h2>{hall ? `${hall} 级大本营` : '所有大本营等级'}</h2>
+                <p>
+                  {hall
+                    ? `TH ${hall} · ${selectedCount?.bases ?? 0} 个阵型 · ${selectedCount?.armies ?? 0} 套配兵`
+                    : `从初入村庄，到高本对战`}
+                </p>
+              </div>
+            </div>
+            <div className="banner-word" aria-hidden="true">
+              {hall ? `TH${hall}` : 'ATLAS'}
+            </div>
+            <div className="banner-caption">
+              选好阵型，再出发 <ArrowRight size={17} />
+            </div>
+          </section>
+
+          <div className="library-controls">
+            <div className="kind-tabs" role="tablist" aria-label="内容类型">
+              <button
+                role="tab"
+                aria-selected={kind === 'base'}
+                className={kind === 'base' ? 'selected' : ''}
+                onClick={() => changeKind('base')}
+              >
+                <Shield size={17} />
+                阵型库<span>{catalog?.total_bases ?? '—'}</span>
+              </button>
+              <button
+                role="tab"
+                aria-selected={kind === 'army'}
+                className={kind === 'army' ? 'selected' : ''}
+                onClick={() => changeKind('army')}
+              >
+                <Swords size={17} />
+                配兵库<span>{catalog?.total_armies ?? '—'}</span>
+              </button>
+            </div>
+            <label className="search-box">
+              <Search size={17} />
+              <input
+                aria-label="搜索阵型或配兵"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={
+                  kind === 'base' ? '搜索阵型、标签…' : '搜索配兵名称…'
+                }
+              />
+              {search && (
+                <button
+                  className="icon-button"
+                  aria-label="清空搜索"
+                  onClick={() => setSearch('')}
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </label>
+          </div>
+          <div
+            className={`filter-row ${kind === 'army' ? 'army-filters' : ''}`}
+          >
+            <div className="purpose-filters" aria-label="用途筛选">
+              {Object.entries(purposes)
+                .filter(
+                  ([key]) => kind === 'base' || ['all', 'war'].includes(key),
+                )
+                .map(([key, label]) => (
+                  <button
+                    key={key}
+                    className={purpose === key ? 'selected' : ''}
+                    aria-pressed={purpose === key}
+                    onClick={() => {
+                      setPurpose(key);
+                      setPage(1);
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+            </div>
+            <label className="sort-select">
+              <ArrowDownUp size={13} />
+              <select
+                aria-label="排序"
+                value={sort}
+                onChange={(e) => {
+                  setSort(e.target.value);
+                  setPage(1);
+                }}
+              >
+                <option value="latest">最近更新</option>
+                <option value="oldest">最早收录</option>
+              </select>
+              <ChevronDown size={13} />
+            </label>
+          </div>
+          <div
+            className="results-meta"
+            ref={resultsRef}
+            tabIndex={-1}
+            aria-live="polite"
+          >
+            <span>
+              {loading
+                ? '正在加载资料…'
+                : `共 ${total} ${kind === 'base' ? '个阵型' : '套配兵'}`}
+              {query && ` · “${query}”`}
+            </span>
+            <span>
+              图片可点开查看详情 <ArrowRight size={12} />
+            </span>
+          </div>
+
+          {error ? (
+            <div className="empty">
+              <RefreshCw size={28} />
+              <h3>资料暂时加载失败</h3>
+              <p>{error}，请确认 API 已启动。</p>
+              <button
+                className="primary-button"
+                onClick={() => setReload((x) => x + 1)}
+              >
+                重新加载
+              </button>
+            </div>
+          ) : loading ? (
+            <div className="entry-grid">
+              {Array.from({ length: 6 }, (_, i) => (
+                <div className="skeleton" key={i}>
+                  <div />
+                  <span />
+                  <span />
+                </div>
+              ))}
+            </div>
+          ) : items.length ? (
+            <div className="entry-grid">
+              {items.map((entry, index) => (
+                <EntryCard
+                  key={entry.id}
+                  entry={entry}
+                  index={index}
+                  isSaved={saved.includes(entry.id)}
+                  onSave={toggleSaved}
+                  onSelect={setSelected}
+                  onCopy={copy}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="empty">
+              <Layers3 size={34} />
+              <h3>{savedOnly ? '这里还没有收藏' : '暂时没有匹配的资料'}</h3>
+              <p>
+                {savedOnly
+                  ? '点击阵型或配兵右上角的爱心，保存到当前浏览器。'
+                  : '部分低本暂无公开分享链接，可以切换等级或清除筛选。'}
+              </p>
+              <button
+                className="secondary-button"
+                onClick={() => {
+                  changeHall(null);
+                  setSearch('');
+                  setPurpose('all');
+                  if (savedOnly) setSavedOnly(false);
+                }}
+              >
+                查看全部资料
+                <ArrowRight size={14} />
+              </button>
+            </div>
+          )}
+
+          {total > pageSize && !loading && !error && (
+            <nav className="pagination" aria-label="分页">
+              <span>
+                第 {page} / {Math.ceil(total / pageSize)} 页
+              </span>
+              <button
+                disabled={page === 1}
+                aria-label="上一页"
+                onClick={() => changePage(page - 1)}
+              >
+                <ArrowLeft size={16} />
+              </button>
+              <button
+                disabled={page * pageSize >= total}
+                aria-label="下一页"
+                onClick={() => changePage(page + 1)}
+              >
+                <ArrowRight size={16} />
+              </button>
+            </nav>
+          )}
+          <footer>
+            <span className="footer-brand">
+              <Castle size={17} />
+              阵研所<small>为热爱，持续整理。</small>
+            </span>
+            <p>
+              本网站为非官方玩家资料库，未经 Supercell 认可。
+              <a
+                href="https://supercell.com/en/fan-content-policy/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                粉丝内容政策
+                <ExternalLink size={10} />
+              </a>
+            </p>
+            <span>
+              链接是否有效，以游戏内导入结果为准。收藏仅保存在当前浏览器。
+            </span>
+          </footer>
+        </main>
+      </div>
+
+      {selected && (
+        <EntryDetail
+          selected={selected}
+          isSaved={saved.includes(selected.id)}
+          onSave={toggleSaved}
+          onCopy={copy}
+          onClose={() => setSelected(null)}
+        />
+      )}
+      {showSources && (
+        <Dialog close={() => setShowSources(false)} label="数据来源">
+          <div className="sources-body">
+            <div className="eyebrow">TRANSPARENT BY DESIGN</div>
+            <h2>每条资料，都有出处。</h2>
+            <p>
+              公开网页定时整理，每条详情均展示原始页面与采集时间。同一条资料出现于多个来源时保留全部出处。采集成功不代表游戏内链接已经验证。
+            </p>
+            {sourceError ? (
+              <p role="alert">{sourceError}</p>
+            ) : sources.length ? (
+              sources.map((source) => (
+                <div className="source-row" key={source.id}>
+                  <div>
+                    <a
+                      href={source.home_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {source.name}
+                      <ExternalLink size={13} />
+                    </a>
+                    <small>
+                      收录 {source.entries} 条资料 · 最近运行{' '}
+                      {date(source.finished_at)}
+                    </small>
+                  </div>
+                  <span
+                    className={`source-state ${source.status === 'success' ? 'ok' : ''}`}
+                  >
+                    {!source.enabled
+                      ? '已停用'
+                      : source.status === 'success'
+                        ? '采集成功'
+                        : source.status === 'partial'
+                          ? '部分失败'
+                          : source.status === 'failed'
+                            ? '采集失败'
+                            : '尚无运行记录'}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p>暂无来源记录。</p>
+            )}
+            <div className="sources-note">
+              <Shield size={18} />
+              <p>
+                来源不可访问时保留已有内容。图片暂时采用来源地址，原站图片失效时可以查看来源页面。
+              </p>
+            </div>
+          </div>
+        </Dialog>
+      )}
+      {toast && (
+        <div className="toast" role="status">
+          <Check size={16} />
+          {toast}
+        </div>
+      )}
+    </div>
+  );
+}

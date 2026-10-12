@@ -1,0 +1,79 @@
+{
+  "environment": "Codex in-app browser, viewport simulation; not physical iOS devices",
+  "date": "2026-10-12",
+  "measurement": "DOM bounds in CSS pixels, rounded to nearest pixel",
+  "checks": [
+    {
+      "columns": 1,
+      "compact": true,
+      "height": 568,
+      "scrollWidth": 320,
+      "smallTargets": [],
+      "width": 320
+    },
+    {
+      "columns": 1,
+      "compact": true,
+      "height": 844,
+      "scrollWidth": 390,
+      "smallTargets": [],
+      "width": 390
+    },
+    {
+      "columns": 1,
+      "compact": true,
+      "height": 1024,
+      "scrollWidth": 507,
+      "smallTargets": [],
+      "width": 507
+    },
+    {
+      "columns": 2,
+      "compact": true,
+      "height": 1024,
+      "scrollWidth": 768,
+      "smallTargets": [],
+      "width": 768
+    },
+    {
+      "columns": 2,
+      "compact": true,
+      "height": 1180,
+      "scrollWidth": 820,
+      "smallTargets": [],
+      "width": 820
+    },
+    {
+      "columns": 2,
+      "compact": false,
+      "height": 768,
+      "scrollWidth": 1024,
+      "smallTargets": [],
+      "width": 1024
+    },
+    {
+      "columns": 3,
+      "compact": false,
+      "height": 820,
+      "scrollWidth": 1180,
+      "smallTargets": [],
+      "width": 1180
+    },
+    {
+      "columns": 2,
+      "compact": false,
+      "height": 1366,
+      "scrollWidth": 1024,
+      "smallTargets": [],
+      "width": 1024
+    },
+    {
+      "columns": 2,
+      "compact": true,
+      "height": 390,
+      "scrollWidth": 844,
+      "smallTargets": [],
+      "width": 844
+    }
+  ]
+}

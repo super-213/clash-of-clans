@@ -1,0 +1,62 @@
+[
+  {
+    "closeHeight": 44,
+    "dialogClient": 280,
+    "dialogScroll": 280,
+    "docWidth": 320,
+    "grid": "244px",
+    "height": 568,
+    "summaryMinHeight": 44,
+    "width": 320
+  },
+  {
+    "closeHeight": 44,
+    "dialogClient": 350,
+    "dialogScroll": 350,
+    "docWidth": 390,
+    "grid": "314px",
+    "height": 844,
+    "summaryMinHeight": 44,
+    "width": 390
+  },
+  {
+    "closeHeight": 44,
+    "dialogClient": 728,
+    "dialogScroll": 728,
+    "docWidth": 768,
+    "grid": "323px 323px",
+    "height": 1024,
+    "summaryMinHeight": 44,
+    "width": 768
+  },
+  {
+    "closeHeight": 44,
+    "dialogClient": 780,
+    "dialogScroll": 780,
+    "docWidth": 820,
+    "grid": "349px 349px",
+    "height": 1180,
+    "summaryMinHeight": 44,
+    "width": 820
+  },
+  {
+    "closeHeight": 44,
+    "dialogClient": 838,
+    "dialogScroll": 838,
+    "docWidth": 1024,
+    "grid": "378px 378px",
+    "height": 768,
+    "summaryMinHeight": 44,
+    "width": 1024
+  },
+  {
+    "closeHeight": 44,
+    "dialogClient": 804,
+    "dialogScroll": 804,
+    "docWidth": 844,
+    "grid": "361px 361px",
+    "height": 390,
+    "summaryMinHeight": 44,
+    "width": 844
+  }
+]

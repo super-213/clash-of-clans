@@ -1,0 +1,56 @@
+# robots.txt is checked at runtime. Public accessibility is not a license to
+# redistribute images; mirroring is opt-in per source after rights review.
+[[sources]]
+id = "clash-layouts"
+adapter = "layouts"
+name = "Clash of Clans Layouts"
+path_prefix = "/zh"
+base_url = "https://clashofclans-layouts.com"
+allowed_hosts = ["clashofclans-layouts.com"]
+levels = [18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3]
+delay_seconds = 2.0
+mirror_images = false
+
+[[sources]]
+id = "clashest"
+adapter = "clashest"
+name = "Clashest"
+base_url = "https://clashest.com"
+allowed_hosts = ["clashest.com"]
+levels = [18,17,16,15,14,13,12,11,10,9,8]
+delay_seconds = 2.0
+mirror_images = false
+
+# Seeded guides are refreshed on every scheduled run. Add reviewed pages explicitly.
+[[sources]]
+id = "blueprint"
+adapter = "blueprint"
+name = "Blueprint CoC"
+base_url = "https://blueprintcoc.com"
+allowed_hosts = ["blueprintcoc.com"]
+levels = [18]
+delay_seconds = 2.0
+mirror_images = false
+pages = [{level = 18, url = "https://blueprintcoc.com/blogs/town-hall-18/best-th18-hydra-army-link"}]
+
+[[sources]]
+id = "clashcodes"
+adapter = "clashcodes"
+name = "Clashcodes 中文站"
+base_url = "https://clashcodes.com"
+index_url = "https://clashcodes.com/zh/bases/部落冲突阵型"
+allowed_hosts = ["clashcodes.com"]
+levels = [18,17,16,15,14]
+delay_seconds = 2.0
+mirror_images = false
+
+[[sources]]
+id = "clashbaselink"
+adapter = "clashbaselink"
+name = "ClashBaseLink"
+base_url = "https://clashbaselink.com"
+index_url = "https://clashbaselink.com/bases/"
+allowed_hosts = ["clashbaselink.com"]
+levels = [18,17,16,15,14,13,12,11,10,9,8,7,6,5,4]
+delay_seconds = 2.0
+mirror_images = false

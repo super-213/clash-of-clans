@@ -1,0 +1,287 @@
+{
+  "Barbarian King": {
+    "name": "Barbarian King",
+    "image_url": "https://clashest.com/game/coc/heroes/barbarian-king.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/barbarian-king"
+  },
+  "Archer Queen": {
+    "name": "Archer Queen",
+    "image_url": "https://clashest.com/game/coc/heroes/archer-queen.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/archer-queen"
+  },
+  "Grand Warden": {
+    "name": "Grand Warden",
+    "image_url": "https://clashest.com/game/coc/heroes/grand-warden.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/grand-warden"
+  },
+  "Royal Champion": {
+    "name": "Royal Champion",
+    "image_url": "https://clashest.com/game/coc/heroes/royal-champion.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/royal-champion"
+  },
+  "Dragon Duke": {
+    "name": "Dragon Duke",
+    "image_url": "https://clashest.com/game/coc/heroes/dragon-duke.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/dragon-duke"
+  },
+  "Minion Prince": {
+    "name": "Minion Prince",
+    "image_url": "https://clashest.com/game/coc/heroes/minion-prince.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/minion-prince"
+  },
+  "Battle Machine": {
+    "name": "Battle Machine",
+    "image_url": "https://clashest.com/game/coc/levels/bb-battle-machine/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes"
+  },
+  "Battle Copter": {
+    "name": "Battle Copter",
+    "image_url": "https://clashest.com/game/coc/heroes/battle-copter.webp",
+    "image_source_url": "https://clashest.com/coc/heroes"
+  },
+  "L.A.S.S.I": {
+    "name": "L.A.S.S.I",
+    "image_url": "https://clashest.com/game/coc/pets/lassi.webp",
+    "image_source_url": "https://clashest.com/coc/heroes"
+  },
+  "Electro Owl": {
+    "name": "Electro Owl",
+    "image_url": "https://clashest.com/game/coc/pets/electro-owl.webp",
+    "image_source_url": "https://clashest.com/coc/heroes"
+  },
+  "Mighty Yak": {
+    "name": "Mighty Yak",
+    "image_url": "https://clashest.com/game/coc/pets/mighty-yak.webp",
+    "image_source_url": "https://clashest.com/coc/heroes"
+  },
+  "Unicorn": {
+    "name": "Unicorn",
+    "image_url": "https://clashest.com/game/coc/pets/unicorn.webp",
+    "image_source_url": "https://clashest.com/coc/heroes"
+  },
+  "Frosty": {
+    "name": "Frosty",
+    "image_url": "https://clashest.com/game/coc/pets/frosty.webp",
+    "image_source_url": "https://clashest.com/coc/heroes"
+  },
+  "Diggy": {
+    "name": "Diggy",
+    "image_url": "https://clashest.com/game/coc/pets/diggy.webp",
+    "image_source_url": "https://clashest.com/coc/heroes"
+  },
+  "Poison Lizard": {
+    "name": "Poison Lizard",
+    "image_url": "https://clashest.com/game/coc/pets/poison-lizard.webp",
+    "image_source_url": "https://clashest.com/coc/heroes"
+  },
+  "Phoenix": {
+    "name": "Phoenix",
+    "image_url": "https://clashest.com/game/coc/pets/phoenix.webp",
+    "image_source_url": "https://clashest.com/coc/heroes"
+  },
+  "Spirit Fox": {
+    "name": "Spirit Fox",
+    "image_url": "https://clashest.com/game/coc/pets/spirit-fox.webp",
+    "image_source_url": "https://clashest.com/coc/heroes"
+  },
+  "Sneezy": {
+    "name": "Sneezy",
+    "image_url": "https://clashest.com/game/coc/pets/sneezy.webp",
+    "image_source_url": "https://clashest.com/coc/heroes"
+  },
+  "Greedy Raven": {
+    "name": "Greedy Raven",
+    "image_url": "https://clashest.com/game/coc/pets/greedy-raven.webp",
+    "image_source_url": "https://clashest.com/coc/heroes"
+  },
+  "Angry Jelly": {
+    "name": "Angry Jelly",
+    "image_url": "https://clashest.com/game/coc/pets/angry-jelly.webp",
+    "image_source_url": "https://clashest.com/coc/heroes"
+  },
+  "Barbarian Puppet": {
+    "name": "Barbarian Puppet",
+    "image_url": "https://clashest.com/game/coc/levels/barbarian-puppet/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/barbarian-king"
+  },
+  "Rage Vial": {
+    "name": "Rage Vial",
+    "image_url": "https://clashest.com/game/coc/levels/rage-vial/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/barbarian-king"
+  },
+  "Earthquake Boots": {
+    "name": "Earthquake Boots",
+    "image_url": "https://clashest.com/game/coc/levels/earthquake-boots/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/barbarian-king"
+  },
+  "Vampstache": {
+    "name": "Vampstache",
+    "image_url": "https://clashest.com/game/coc/levels/vampstache/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/barbarian-king"
+  },
+  "Giant Gauntlet": {
+    "name": "Giant Gauntlet",
+    "image_url": "https://clashest.com/game/coc/levels/giant-gauntlet/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/barbarian-king"
+  },
+  "Spiky Ball": {
+    "name": "Spiky Ball",
+    "image_url": "https://clashest.com/game/coc/levels/spiky-ball/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/barbarian-king"
+  },
+  "Snake Bracelet": {
+    "name": "Snake Bracelet",
+    "image_url": "https://clashest.com/game/coc/levels/snake-bracelet/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/barbarian-king"
+  },
+  "Stick Horse": {
+    "name": "Stick Horse",
+    "image_url": "https://clashest.com/game/coc/levels/stick-horse/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/barbarian-king"
+  },
+  "Archer Puppet": {
+    "name": "Archer Puppet",
+    "image_url": "https://clashest.com/game/coc/levels/archer-puppet/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/archer-queen"
+  },
+  "Invisibility Vial": {
+    "name": "Invisibility Vial",
+    "image_url": "https://clashest.com/game/coc/levels/invisibility-vial/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/archer-queen"
+  },
+  "Giant Arrow": {
+    "name": "Giant Arrow",
+    "image_url": "https://clashest.com/game/coc/levels/giant-arrow/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/archer-queen"
+  },
+  "Healer Puppet": {
+    "name": "Healer Puppet",
+    "image_url": "https://clashest.com/game/coc/levels/healer-puppet/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/archer-queen"
+  },
+  "Frozen Arrow": {
+    "name": "Frozen Arrow",
+    "image_url": "https://clashest.com/game/coc/levels/frozen-arrow/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/archer-queen"
+  },
+  "Magic Mirror": {
+    "name": "Magic Mirror",
+    "image_url": "https://clashest.com/game/coc/levels/magic-mirror/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/archer-queen"
+  },
+  "Monolith Arrow": {
+    "name": "Monolith Arrow",
+    "image_url": "https://clashest.com/game/coc/levels/monolith-arrow/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/archer-queen"
+  },
+  "Eternal Tome": {
+    "name": "Eternal Tome",
+    "image_url": "https://clashest.com/game/coc/levels/eternal-tome/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/grand-warden"
+  },
+  "Life Gem": {
+    "name": "Life Gem",
+    "image_url": "https://clashest.com/game/coc/levels/life-gem/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/grand-warden"
+  },
+  "Healing Tome": {
+    "name": "Healing Tome",
+    "image_url": "https://clashest.com/game/coc/levels/healing-tome/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/grand-warden"
+  },
+  "Rage Gem": {
+    "name": "Rage Gem",
+    "image_url": "https://clashest.com/game/coc/levels/rage-gem/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/grand-warden"
+  },
+  "Fireball": {
+    "name": "Fireball",
+    "image_url": "https://clashest.com/game/coc/levels/fireball/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/grand-warden"
+  },
+  "Lavaloon Puppet": {
+    "name": "Lavaloon Puppet",
+    "image_url": "https://clashest.com/game/coc/levels/lavaloon-puppet/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/grand-warden"
+  },
+  "Royal Gem": {
+    "name": "Royal Gem",
+    "image_url": "https://clashest.com/game/coc/levels/royal-gem/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/royal-champion"
+  },
+  "Seeking Shield": {
+    "name": "Seeking Shield",
+    "image_url": "https://clashest.com/game/coc/levels/seeking-shield/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/royal-champion"
+  },
+  "Hog Rider Puppet": {
+    "name": "Hog Rider Puppet",
+    "image_url": "https://clashest.com/game/coc/levels/hog-rider-puppet/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/royal-champion"
+  },
+  "Haste Vial": {
+    "name": "Haste Vial",
+    "image_url": "https://clashest.com/game/coc/levels/haste-vial/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/royal-champion"
+  },
+  "Rocket Spear": {
+    "name": "Rocket Spear",
+    "image_url": "https://clashest.com/game/coc/levels/rocket-spear/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/royal-champion"
+  },
+  "Electro Boots": {
+    "name": "Electro Boots",
+    "image_url": "https://clashest.com/game/coc/levels/electro-boots/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/royal-champion"
+  },
+  "Frost Flake": {
+    "name": "Frost Flake",
+    "image_url": "https://clashest.com/game/coc/levels/frost-flake/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/royal-champion"
+  },
+  "Fire Heart": {
+    "name": "Fire Heart",
+    "image_url": "https://clashest.com/game/coc/levels/fire-heart/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/dragon-duke"
+  },
+  "Flame Blower": {
+    "name": "Flame Blower",
+    "image_url": "https://clashest.com/game/coc/levels/flame-blower/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/dragon-duke"
+  },
+  "Stun Blaster": {
+    "name": "Stun Blaster",
+    "image_url": "https://clashest.com/game/coc/levels/stun-blaster/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/dragon-duke"
+  },
+  "Rocket Backpack": {
+    "name": "Rocket Backpack",
+    "image_url": "https://clashest.com/game/coc/levels/rocket-backpack/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/dragon-duke"
+  },
+  "Electro Fangs": {
+    "name": "Electro Fangs",
+    "image_url": "https://clashest.com/game/coc/levels/electro-fangs/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/dragon-duke"
+  },
+  "Henchmen Puppet": {
+    "name": "Henchmen Puppet",
+    "image_url": "https://clashest.com/game/coc/levels/henchmen-puppet/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/minion-prince"
+  },
+  "Dark Orb": {
+    "name": "Dark Orb",
+    "image_url": "https://clashest.com/game/coc/levels/dark-orb/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/minion-prince"
+  },
+  "Metal Pants": {
+    "name": "Metal Pants",
+    "image_url": "https://clashest.com/game/coc/levels/metal-pants/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/minion-prince"
+  },
+  "Noble Iron": {
+    "name": "Noble Iron",
+    "image_url": "https://clashest.com/game/coc/levels/noble-iron/entry.webp",
+    "image_source_url": "https://clashest.com/coc/heroes/minion-prince"
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "checked_at": "2026-10-12T10:06:38.525403+00:00",
+  "observations": 517,
+  "unique_entries": 487,
+  "entries_by_kind": {
+    "base": 445,
+    "army": 42
+  },
+  "duplicate_origin_rows": 0,
+  "additional_provenance_observations": 30,
+  "cross_hall_shares": [
+    {
+      "kind": "army",
+      "village": "home",
+      "payload": "u4x7-11x8-5x5-1x23-1x62s2x2-3x5-1x35-1x1-1x9",
+      "halls": [
+        15,
+        16
+      ]
+    }
+  ],
+  "policy": "One entry per kind/village/hall/share payload; retain each distinct origin and cross-hall applicability.",
+  "local_d1": {
+    "entries": 487,
+    "entries_by_kind": {
+      "base": 445,
+      "army": 42
+    },
+    "duplicate_shared_payloads_within_hall": 0
+  },
+  "real_resume_check": {
+    "source_id": "clash-layouts",
+    "hall": 18,
+    "manual_test_max_pages_per_run": 1,
+    "manual_test_max_seconds_per_run": 25,
+    "record_limit": null,
+    "runs": [
+      {
+        "id": "b0f5abc1-b043-4c78-a8cd-25c39f258323",
+        "discovered": 12,
+        "status": "success"
+      },
+      {
+        "id": "2143758f-f1a4-44aa-9302-6984be5beb78",
+        "discovered": 12,
+        "status": "success"
+      }
+    ],
+    "before": {
+      "next_url": "https://clashofclans-layouts.com/zh/plans/th_18/page_4/",
+      "pending": [
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_175.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_174.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/defence_81.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_173.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/defence_80.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_172.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_171.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/defence_79.html",
+          "done": []
+        }
+      ],
+      "seen_pages": [
+        "https://clashofclans-layouts.com/zh/plans/th_18/",
+        "https://clashofclans-layouts.com/zh/plans/th_18/page_2/",
+        "https://clashofclans-layouts.com/zh/plans/th_18/page_3/"
+      ],
+      "complete": false
+    },
+    "after": {
+      "next_url": "https://clashofclans-layouts.com/zh/plans/th_18/page_6/",
+      "pending": [
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_157.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_156.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_155.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/farm_21.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/defence_75.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_154.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/war_153.html",
+          "done": []
+        },
+        {
+          "url": "https://clashofclans-layouts.com/zh/plans/th_18/defence_74.html",
+          "done": []
+        }
+      ],
+      "seen_pages": [
+        "https://clashofclans-layouts.com/zh/plans/th_18/",
+        "https://clashofclans-layouts.com/zh/plans/th_18/page_2/",
+        "https://clashofclans-layouts.com/zh/plans/th_18/page_3/",
+        "https://clashofclans-layouts.com/zh/plans/th_18/page_4/",
+        "https://clashofclans-layouts.com/zh/plans/th_18/page_5/"
+      ],
+      "complete": false
+    },
+    "new_pages": [
+      "https://clashofclans-layouts.com/zh/plans/th_18/page_4/",
+      "https://clashofclans-layouts.com/zh/plans/th_18/page_5/"
+    ]
+  }
+}
