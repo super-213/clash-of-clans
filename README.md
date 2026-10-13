@@ -48,10 +48,11 @@ uv run --directory crawler python -m atlas.audit
 npm test
 npm run build
 npm run test:integration
+npm run test:quota
 uv run --directory crawler --frozen pytest
 ```
 
-集成测试启动临时 Worker 与真实本地 D1 迁移，验证鉴权、去重、状态维护、来源停用和 API 路由，不使用生产数据库。Wrangler 支持的最新兼容日期取决于锁定的版本，依赖已通过 package-lock.json 与 crawler/uv.lock 固定。
+集成测试启动临时 Worker 与真实本地 D1 迁移，验证鉴权、去重、状态维护、来源停用、共享缓存失效和批量详情 API，不使用生产数据库。`test:quota` 使用 500 条临时测试资料核对汇总结果和 D1 `rows_read`，防止逐等级扫描回归；这不是线上用量或 CPU 压测。Wrangler 支持的最新兼容日期取决于锁定的版本，依赖已通过 package-lock.json 与 crawler/uv.lock 固定。
 
 ## 自动维护
 

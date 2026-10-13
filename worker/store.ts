@@ -1,5 +1,18 @@
 import type { Entry, EntryInput, EntryOrigin } from '../shared/schema';
 
+// Aggregate entries once before joining the small level table. Joining raw
+// entries first scans every published entry for each of the 18 hall levels.
+export const catalogLevelsSql = `SELECT h.level,
+  COALESCE(e.bases,0) AS bases, COALESCE(e.armies,0) AS armies
+  FROM hall_levels h LEFT JOIN (
+    SELECT town_hall,
+      SUM(CASE WHEN kind='base' THEN 1 ELSE 0 END) AS bases,
+      SUM(CASE WHEN kind='army' THEN 1 ELSE 0 END) AS armies
+    FROM entries WHERE visibility='published' AND village='home' AND link_status<>'expired'
+    GROUP BY town_hall
+  ) e ON e.town_hall=h.level
+  WHERE h.village='home' ORDER BY h.level DESC`;
+
 export async function digest(value: string): Promise<string> {
   const bytes = await crypto.subtle.digest(
     'SHA-256',

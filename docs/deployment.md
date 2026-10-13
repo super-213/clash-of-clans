@@ -59,7 +59,9 @@ Cloudflare 部署 token 需要目标账户 Workers Scripts Edit、D1 Edit 和 R2
 | PATCH `/api/admin/entries/:id` | `{"visibility":"hidden","link_status":"expired"}` 下架失效内容 |
 | PATCH `/api/admin/entries/:id` | `{"visibility":"published","link_status":"confirmed"}` 人工游戏内导入成功后确认 |
 
-来源停用不会隐藏过去已收录条目。下架/人工确认不会被下一轮采集覆盖。注意读 API 有 60 秒缓存；需要立刻强制移除的内容应同时处理 CDN 缓存。
+来源停用不会隐藏过去已收录条目。下架/人工确认不会被下一轮采集覆盖。写入成功后会使当前数据中心的公开缓存版本失效；其他节点的列表、详情和批量详情最多缓存 60 秒，目录与来源汇总最多缓存 300 秒。浏览器缓存不会额外延长共享缓存有效期。已经打开的详情/收藏是页面快照，需刷新才能更新；需要立刻全局强制移除时应同时处理 Cloudflare 缓存。
+
+共享缓存直接使用免费的 Cache API，无须新增 KV、付费缓存服务或数据库迁移。部署后连续请求相同公开 URL，确认响应头从 `X-Atlas-Cache: MISS` 变为 `HIT`，并查看 D1 Row Metrics 的实际读取变化。该缓存按数据中心生效，命中仍占 Worker 请求额度；不要将 `HIT` 误解为全部请求免费。生产流量、搜索组合和爬虫写入仍需监控。更改公共响应结构时递增 `worker/cache.ts` 的缓存名称和路径版本，避免复用旧响应。
 
 ## 5. 图片与 R2
 

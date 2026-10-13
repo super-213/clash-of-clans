@@ -173,9 +173,49 @@ try {
   assert.equal(wildcard.total, 0);
   assert.equal((await fetch(root + '/api/entries?th=abc')).status, 400);
   assert.equal((await fetch(root + '/api/does-not-exist')).status, 404);
-  const catalog = await (await fetch(root + '/api/catalog')).json();
+  const catalogResponse = await fetch(root + '/api/catalog');
+  const catalog = await catalogResponse.json();
+  assert.equal(catalogResponse.headers.get('X-Atlas-Cache'), 'MISS');
+  assert.equal(
+    (await fetch(root + '/api/catalog')).headers.get('X-Atlas-Cache'),
+    'HIT',
+  );
   assert.equal(catalog.total_bases, 1);
   assert.equal(catalog.levels.length, 18);
+  assert.equal(catalog.levels.find((level) => level.level === 1).bases, 0);
+  // Batch lookup omits unavailable IDs, deduplicates and keeps full provenance.
+  const missingId = 'f'.repeat(64);
+  const batchPath =
+    '/api/entries/batch?ids=' + [first.id, missingId, first.id].join(',');
+  const savedBatch = await (await fetch(root + batchPath)).json();
+  assert.equal(savedBatch.items.length, 1);
+  assert.deepEqual(savedBatch.items[0].origins, detail.origins);
+  assert.equal('content_hash' in savedBatch.items[0], false);
+  assert.equal(
+    (await fetch(root + batchPath)).headers.get('X-Atlas-Cache'),
+    'HIT',
+  );
+  const fullBatch = [
+    first.id,
+    ...Array.from({ length: 79 }, (_, i) => i.toString(16).padStart(64, '0')),
+  ];
+  assert.equal(
+    (
+      await (
+        await fetch(root + '/api/entries/batch?ids=' + fullBatch.join(','))
+      ).json()
+    ).items.length,
+    1,
+  );
+  assert.equal((await fetch(root + '/api/entries/batch?ids=bad')).status, 400);
+  assert.equal(
+    (
+      await fetch(
+        root + '/api/entries/batch?ids=' + Array(81).fill(first.id).join(','),
+      )
+    ).status,
+    400,
+  );
   await request(
     '/api/admin/entries/' + first.id,
     { visibility: 'hidden', link_status: 'reported' },
@@ -185,6 +225,11 @@ try {
   await request('/api/ingest/entries', { entries: [entry] });
   assert.equal((await (await fetch(root + '/api/entries')).json()).total, 0);
   assert.equal((await fetch(root + '/api/entries/' + first.id)).status, 404);
+  assert.deepEqual((await (await fetch(root + batchPath)).json()).items, []);
+  assert.equal(
+    (await (await fetch(root + '/api/catalog')).json()).total_bases,
+    0,
+  );
   await request(
     '/api/admin/sources/test-source',
     { enabled: false },

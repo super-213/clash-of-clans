@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowDownUp,
   ArrowLeft,
@@ -22,6 +22,7 @@ import { date, purposes } from './format';
 import { Dialog } from './components/Media';
 import { EntryCard } from './components/EntryCard';
 import { EntryDetail } from './components/EntryDetail';
+import { SavedEntryStore, selectSavedEntries } from './saved-entries';
 
 async function api<T>(path: string, signal?: AbortSignal): Promise<T> {
   const response = await fetch(path, { signal });
@@ -31,7 +32,7 @@ async function api<T>(path: string, signal?: AbortSignal): Promise<T> {
 function readSaved(): string[] {
   try {
     return JSON.parse(localStorage.getItem('atlas:saved') || '[]')
-      .filter((x: unknown) => typeof x === 'string')
+      .filter((x: unknown) => typeof x === 'string' && /^[a-f0-9]{64}$/.test(x))
       .slice(0, 200);
   } catch {
     return [];
@@ -46,7 +47,6 @@ type Source = {
   finished_at: string | null;
   entries: number;
 };
-const noSavedQuery: string[] = [];
 
 export function App() {
   const initial = new URLSearchParams(location.search);
@@ -66,13 +66,16 @@ export function App() {
   const [sort, setSort] = useState('latest');
   const [page, setPage] = useState(1);
   const [catalog, setCatalog] = useState<Catalog | null>(null);
-  const [items, setItems] = useState<Entry[]>([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [listItems, setItems] = useState<Entry[]>([]);
+  const [listTotal, setTotal] = useState(0);
+  const [listLoading, setLoading] = useState(true);
+  const [listError, setError] = useState('');
+  const [savedStore] = useState(() => new SavedEntryStore());
+  const [savedEntries, setSavedEntries] = useState<Entry[]>([]);
+  const [savedLoading, setSavedLoading] = useState(false);
+  const [savedError, setSavedError] = useState('');
   const [saved, setSaved] = useState<string[]>(readSaved);
   const [savedOnly, setSavedOnly] = useState(false);
-  const savedForQuery = savedOnly ? saved : noSavedQuery;
   const [selected, setSelected] = useState<Entry | null>(null);
   const [toast, setToast] = useState('');
   const [mobileNav, setMobileNav] = useState(false);
@@ -85,6 +88,18 @@ export function App() {
   const [sourceError, setSourceError] = useState('');
   const [reload, setReload] = useState(0);
   const pageSize = 12;
+  const savedResult = useMemo(
+    () =>
+      selectSavedEntries(
+        savedEntries.filter((entry) => saved.includes(entry.id)),
+        { kind, hall, purpose, query, sort, page, pageSize },
+      ),
+    [savedEntries, saved, kind, hall, purpose, query, sort, page],
+  );
+  const items = savedOnly ? savedResult.items : listItems;
+  const total = savedOnly ? savedResult.total : listTotal;
+  const loading = savedOnly ? savedLoading : listLoading;
+  const error = savedOnly ? savedError : listError;
 
   useEffect(() => {
     const media = window.matchMedia('(max-width: 1023px)');
@@ -121,40 +136,11 @@ export function App() {
     if (purpose !== 'all') params.set('purpose', purpose);
     if (query) params.set('q', query);
     history.replaceState(null, '', '?' + params);
+    if (savedOnly) return;
     const controller = new AbortController();
     setLoading(true);
     setError('');
     const load = async () => {
-      if (savedOnly) {
-        const all = await Promise.all(
-          savedForQuery.map((id) =>
-            api<Entry>(`/api/entries/${id}`, controller.signal).catch((err) => {
-              if (err.message.includes('(404)')) return null;
-              throw err;
-            }),
-          ),
-        );
-        const filtered = all.filter(
-          (entry): entry is Entry =>
-            !!entry &&
-            entry.kind === kind &&
-            (!hall || entry.town_hall === hall) &&
-            (purpose === 'all' || entry.purpose === purpose) &&
-            (!query ||
-              `${entry.title} ${entry.tags.join(' ')}`
-                .toLowerCase()
-                .includes(query.toLowerCase())),
-        );
-        filtered.sort((a, b) =>
-          sort === 'latest'
-            ? b.updated_at.localeCompare(a.updated_at)
-            : a.updated_at.localeCompare(b.updated_at),
-        );
-        return {
-          items: filtered.slice((page - 1) * pageSize, page * pageSize),
-          total: filtered.length,
-        };
-      }
       params.set('page', String(page));
       params.set('limit', String(pageSize));
       params.set('sort', sort);
@@ -166,6 +152,7 @@ export function App() {
     load()
       .then((result) => {
         if (!controller.signal.aborted) {
+          savedStore.remember(result.items);
           setItems(result.items);
           setTotal(result.total);
         }
@@ -177,17 +164,30 @@ export function App() {
         if (!controller.signal.aborted) setLoading(false);
       });
     return () => controller.abort();
-  }, [
-    kind,
-    hall,
-    purpose,
-    query,
-    sort,
-    page,
-    savedOnly,
-    savedForQuery,
-    reload,
-  ]);
+  }, [kind, hall, purpose, query, sort, page, savedOnly, savedStore, reload]);
+
+  // Fetch only when the collection itself changes. Filters, sort and page are
+  // derived above from this snapshot, so even a long browsing session is local.
+  useEffect(() => {
+    if (!savedOnly) return;
+    let cancelled = false;
+    setSavedLoading(true);
+    setSavedError('');
+    savedStore
+      .getMany(saved, reload)
+      .then((entries) => {
+        if (!cancelled) setSavedEntries(entries);
+      })
+      .catch((err) => {
+        if (!cancelled) setSavedError(err.message);
+      })
+      .finally(() => {
+        if (!cancelled) setSavedLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [savedOnly, saved, reload, savedStore]);
 
   useEffect(() => {
     if (!showSources) return;

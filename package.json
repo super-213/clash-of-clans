@@ -10,6 +10,7 @@
     "check": "tsc --noEmit",
     "test": "vitest run",
     "test:integration": "node scripts/integration.mjs",
+    "test:quota": "node scripts/quota-check.mjs",
     "db:migrate": "wrangler d1 migrations apply village-atlas --local",
     "db:seed": "node scripts/seed.mjs",
     "deploy": "npm run build && wrangler deploy"
