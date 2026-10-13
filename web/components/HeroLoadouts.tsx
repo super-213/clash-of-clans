@@ -39,9 +39,7 @@ export function HeroLoadouts({ entry }: { entry: Entry }) {
   return (
     <section className="hero-loadouts" aria-label="英雄、宠物与技能装备搭配">
       <h3>英雄搭配</h3>
-      <p className="loadout-explainer">
-        每位英雄对应的宠物与技能装备。来源未注明的配置保留空缺，请到原文核对。
-      </p>
+      <p className="loadout-explainer">空缺配置请到原文核对。</p>
       {!loadouts.length && (
         <p className="loadout-explainer">来源暂未提供英雄搭配。</p>
       )}

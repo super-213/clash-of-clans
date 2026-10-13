@@ -24,9 +24,6 @@ export function EntryDetail({
           <Picture src={selected.image_url} alt={selected.title} />
         ) : (
           <div className="detail-army">
-            <div className="eyebrow">
-              ARMY COMPOSITION · TH {selected.town_hall}
-            </div>
             <HeroLoadouts entry={selected} />
             {!selected.units.length && (
               <Picture
@@ -62,12 +59,15 @@ export function EntryDetail({
           TH {selected.town_hall} / {purposes[selected.purpose]}
         </span>
         <h2>{selected.title}</h2>
-        <p>本站内容更新于 {fullDate(selected.updated_at)}</p>
-        {selected.kind === 'army' && <p>英雄、宠物和装备请在游戏内核对，分享链接可能不包含完整搭配。</p>}
+        {selected.kind === 'army' && (
+          <p>分享链接可能不含完整英雄搭配，请在游戏内核对。</p>
+        )}
         <p>
           {!selected.game_link
             ? '来源暂未提供分享链接，可以参考图片手动摆放。'
-            : `链接${selected.link_status === 'confirmed' ? '经过人工确认' : '尚未在游戏内确认'}，请以游戏内导入结果为准。`}
+            : selected.link_status === 'reported'
+              ? '链接待复核，请以游戏内导入结果为准。'
+              : `链接${selected.link_status === 'confirmed' ? '已人工确认' : '未在游戏内验证'}，以游戏内导入结果为准。`}
         </p>
         <div className="detail-actions">
           {selected.game_link && (
@@ -99,27 +99,21 @@ export function EntryDetail({
             <Heart size={20} fill={isSaved ? 'currentColor' : 'none'} />
           </button>
         </div>
-        {selected.game_link && (
-          <label className="link-field">
-            原始分享链接
-            <input
-              readOnly
-              value={selected.game_link}
-              onFocus={(e) => e.target.select()}
-            />
-          </label>
-        )}
-        <section
-          className="entry-provenance"
-          aria-labelledby="provenance-heading"
-        >
-          <div className="provenance-heading">
-            <h3 id="provenance-heading">采集出处</h3>
-            <span>{selected.origins.length} 个原始页面</span>
-          </div>
-          <p>
-            点击原始页面可核对图片与分享链接。以下时间为本站采集时间，并非原作者发布时间。
-          </p>
+        <details className="entry-provenance">
+          <summary>
+            来源与收录记录 <span>{selected.origins.length} 个出处</span>
+          </summary>
+          <p>内容更新于 {fullDate(selected.updated_at)}，以下为本站采集时间。</p>
+          {selected.game_link && (
+            <label className="link-field">
+              原始分享链接
+              <input
+                readOnly
+                value={selected.game_link}
+                onFocus={(e) => e.target.select()}
+              />
+            </label>
+          )}
           <ul>
             {selected.origins.map((origin) => (
               <li key={`${origin.source_id}:${origin.source_url}`}>
@@ -134,7 +128,7 @@ export function EntryDetail({
                   </a>
                   {origin.source_id === selected.source_id &&
                     origin.source_url === selected.source_url && (
-                      <span>本条内容来源</span>
+                      <span>当前来源</span>
                     )}
                 </div>
                 <a
@@ -166,10 +160,8 @@ export function EntryDetail({
               </li>
             ))}
           </ul>
-          <p className="provenance-note">
-            出处可追溯不代表官方认证；多个出处也不等同于独立验证。链接有效性以游戏内导入结果为准。
-          </p>
-        </section>
+          <p className="provenance-note">出处数量不代表独立验证。</p>
+        </details>
       </div>
     </Dialog>
   );
