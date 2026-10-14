@@ -35,6 +35,7 @@ def walk_pages(
     skip_urls=None,
     checkpoint=None,
     should_stop=None,
+    transform=None,
 ):
     # None means unlimited. Explicit budgets remain available for manual probes.
     state = (
@@ -73,6 +74,8 @@ def walk_pages(
                 done = set(item.get("done", []))
                 remaining, local = [], set()
                 for record in parsed:
+                    if transform:
+                        record = transform(record)
                     key = origin_key(record)
                     unchanged = key in known and {
                         k: v for k, v in record.items() if k != "game_link"
@@ -149,8 +152,10 @@ def collect_source(
     known=None,
     checkpoint=None,
     should_stop=None,
+    evidence=None,
 ):
     from .adapters import discover_layouts, parse_layout, parse_armies, parse_blueprint
+    from .compatibility import checked, RULES
 
     results = []
     state = state if state is not None else {}
@@ -234,6 +239,8 @@ def collect_source(
                 and record["source_id"] == source["id"]
                 and record["town_hall"] == level
                 and record["game_link"]
+                and record.get("compatibility", {}).get("rules_version") == RULES["version"]
+                and record.get("compatibility", {}).get("status") == "compatible"
             }
             if mode != "incremental"
             else set()
@@ -252,6 +259,7 @@ def collect_source(
             skip_urls=skip_urls,
             checkpoint=commit,
             should_stop=should_stop,
+            transform=lambda record: checked(record, evidence),
         )
         results.extend(found)
         if mode != "incremental":

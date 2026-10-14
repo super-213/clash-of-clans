@@ -141,3 +141,34 @@ levels=[18]
     snapshot = json.loads(output.read_text())
     assert len(snapshot["entries"]) == 2
     assert len(snapshot["publication"]["records"]) == 1
+
+
+def test_recheck_only_updates_old_receipts_without_crawling(tmp_path, monkeypatch):
+    from atlas.__main__ import content_digest
+    from atlas.compatibility import RULES
+    output = tmp_path / 'catalog.json'
+    config = tmp_path / 'sources.toml'
+    config.write_text('[[sources]]\nid="test"\nname="Test"\nbase_url="https://source.example"\nlevels=[18]\n')
+    old = record(1)
+    key = origin_key(old)
+    output.write_text(json.dumps({'entries': [old], 'publication': {
+        'target': 'https://atlas.example', 'records': {key: content_digest(old)}}}))
+    monkeypatch.setattr('sys.argv', ['atlas', '--config', str(config), '--output', str(output),
+        '--cache', str(tmp_path / 'cache.sqlite'), '--recheck-only', '--publish'])
+    sent = []
+
+    class Publisher:
+        url = 'https://atlas.example'
+        client = type('Client', (), {'close': lambda self: None})()
+
+        def entries(self, rows):
+            sent.extend(rows)
+            return len(rows)
+
+    monkeypatch.setattr(cli, 'Publisher', Publisher)
+    monkeypatch.setattr(cli, 'Fetcher', lambda *a: (_ for _ in ()).throw(AssertionError('network fetch')))
+    assert cli.main() == 0
+    assert sent[0]['compatibility']['status'] == 'unknown'
+    assert sent[0]['compatibility']['rules_version'] == RULES['version']
+    assert cli.main() == 0
+    assert len(sent) == 1

@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
 import { ingestSchema } from '../shared/schema';
-import { catalogLevelsSql, digest, withOrigins, ingest } from './store';
+import { catalogLevelsSql, compatibleContentSql, digest, withOrigins, ingest } from './store';
 import { cachedPublicJson, invalidatePublicCache } from './cache';
 
 export type Env = {
@@ -91,7 +91,7 @@ app.get('/api/catalog', async (c) => {
       armies: number;
     }>();
     const last = await c.env.DB.prepare(
-      `SELECT MAX(last_seen_at) AS time FROM entries WHERE visibility='published'`,
+      `SELECT MAX(last_seen_at) AS time FROM entries WHERE visibility='published' AND ${compatibleContentSql}`,
     ).first<{ time: string | null }>();
     return c.json({
       levels: levels.results,
@@ -121,6 +121,7 @@ app.get('/api/entries', async (c) => {
     const clauses = [
       "visibility='published'",
       "link_status<>'expired'",
+      compatibleContentSql,
       'kind=?',
       'village=?',
     ];
@@ -169,7 +170,7 @@ app.get('/api/entries/batch', async (c) => {
   return cachedPublicJson(c, 'batch?ids=' + ids.join(','), 60, async () => {
     const rows = await c.env.DB.prepare(
       `SELECT * FROM entries WHERE id IN (${ids.map(() => '?').join(',')})
-       AND visibility='published' AND link_status<>'expired'`,
+       AND visibility='published' AND link_status<>'expired' AND ${compatibleContentSql}`,
     )
       .bind(...ids)
       .all<Record<string, unknown>>();
@@ -182,7 +183,7 @@ app.get('/api/entries/:id', async (c) => {
     return c.json({ error: 'Not found' }, 404);
   return cachedPublicJson(c, 'entry/' + c.req.param('id'), 60, async () => {
     const row = await c.env.DB.prepare(
-      "SELECT * FROM entries WHERE id=? AND visibility='published' AND link_status<>'expired'",
+      `SELECT * FROM entries WHERE id=? AND visibility='published' AND link_status<>'expired' AND ${compatibleContentSql}`,
     )
       .bind(c.req.param('id'))
       .first();
@@ -196,7 +197,7 @@ app.get('/api/sources', async (c) => {
     const rows = await c.env.DB.prepare(
       `SELECT s.id,s.name,s.home_url,s.enabled,r.status,r.finished_at,r.discovered,r.ingested,
     (SELECT COUNT(DISTINCT p.entry_id) FROM provenance p JOIN entries e ON e.id=p.entry_id
-      WHERE p.source_id=s.id AND e.visibility='published' AND e.link_status<>'expired') AS entries
+      WHERE p.source_id=s.id AND e.visibility='published' AND e.link_status<>'expired' AND ${compatibleContentSql}) AS entries
     FROM sources s LEFT JOIN crawl_runs r ON r.id=(SELECT id FROM crawl_runs WHERE source_id=s.id ORDER BY finished_at DESC LIMIT 1)
     ORDER BY s.name`,
     ).all();

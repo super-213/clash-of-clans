@@ -1,5 +1,5 @@
 import { spawn, spawnSync } from 'node:child_process';
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import assert from 'node:assert/strict';
@@ -13,6 +13,7 @@ const env = {
 };
 let server;
 let output = '';
+const rules = JSON.parse(await readFile(new URL('../shared/game-rules.json', import.meta.url), 'utf8'));
 try {
   const migration = spawnSync(
     cli,
@@ -85,6 +86,7 @@ try {
     source_url: 'https://source.example/base',
     source_name: 'Test',
     units: [],
+    compatibility: { status: 'compatible', rules_version: rules.version, reasons: [], evidence_url: 'https://source.example/inventory' },
   };
   assert.equal(
     (await request('/api/ingest/entries', { entries: [entry] }, 'wrong'))
@@ -110,6 +112,34 @@ try {
   assert.equal(list.items[0].link_status, 'unverified');
   assert.equal('content_hash' in list.items[0], false);
   const first = list.items[0];
+  // Legacy, incompatible and previous-rule data stay stored but are excluded
+  // from list, detail, saved-item lookups and both summary counts.
+  for (const [label, compatibility] of [
+    ['legacy', undefined],
+    ['incompatible', { ...entry.compatibility, status: 'incompatible', reasons: ['missing_building'] }],
+    ['previous-rules', { ...entry.compatibility, rules_version: 'previous-release' }],
+  ]) {
+    const hidden = { ...entry, game_link: entry.game_link + '-' + label, compatibility };
+    assert.equal((await request('/api/ingest/entries', { entries: [hidden] })).status, 200);
+    const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`base:home:18:TH18:WB:integration-${label}`));
+    const hiddenId = Buffer.from(bytes).toString('hex');
+    assert.equal((await fetch(root + '/api/entries/' + hiddenId)).status, 404);
+    assert.deepEqual((await (await fetch(root + '/api/entries/batch?ids=' + hiddenId)).json()).items, []);
+  }
+  assert.equal((await (await fetch(root + '/api/entries')).json()).total, 1);
+  assert.equal((await (await fetch(root + '/api/catalog')).json()).total_bases, 1);
+  // Rechecks can retire an already published share without changing its ID.
+  await request('/api/ingest/entries', { entries: [{ ...entry, compatibility: { ...entry.compatibility, status: 'unknown', reasons: ['inventory_missing'] } }] });
+  assert.equal((await fetch(root + '/api/entries/' + first.id)).status, 404);
+  assert.equal((await (await fetch(root + '/api/entries')).json()).total, 0);
+  await request('/api/ingest/entries', { entries: [entry] });
+  const restored = (await (await fetch(root + '/api/entries')).json()).items[0];
+  assert.equal(restored.id, first.id);
+  assert.equal(restored.created_at, first.created_at);
+  // Rechecking changes content timestamps, so subsequent dedup comparisons
+  // use the freshly restored observation.
+  first.updated_at = restored.updated_at;
+  first.last_seen_at = restored.last_seen_at;
   assert.deepEqual(first.hero_loadouts, []);
   assert.equal(first.origins.length, 1);
   assert.equal(first.origins[0].source_url, entry.source_url);
@@ -269,6 +299,7 @@ try {
     town_hall: 3,
     game_link: null,
     source_url: 'https://source.example/th3',
+    compatibility: { status: 'unknown', rules_version: rules.version, reasons: ['missing_layout_link'], evidence_url: null },
   };
   assert.equal(
     (
@@ -279,9 +310,7 @@ try {
     200,
   );
   const lowHall = await (await fetch(root + '/api/entries?th=3')).json();
-  assert.equal(lowHall.total, 1);
-  assert.equal(lowHall.items[0].game_link, null);
-  assert.equal(lowHall.items[0].link_status, 'unavailable');
+  assert.equal(lowHall.total, 0);
   const item = {
     name: 'Rocket Backpack',
     image_url: 'https://source.example/equipment.webp',

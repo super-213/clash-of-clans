@@ -29,6 +29,7 @@ for (const entry of snapshot.entries) {
       image_url: entry.image_url,
       units: entry.units,
       hero_loadouts: entry.hero_loadouts ?? [],
+      compatibility: entry.compatibility ?? { status: 'unknown', rules_version: null, reasons: ['not_checked'], evidence_url: null },
     }),
   );
   sql.push(
@@ -54,6 +55,7 @@ for (const entry of snapshot.entries) {
     'updated_at',
     'last_seen_at',
     'link_status',
+    'compatibility',
   ];
   const values = [
     id,
@@ -75,11 +77,13 @@ for (const entry of snapshot.entries) {
     now,
     now,
     entry.game_link ? 'unverified' : 'unavailable',
+    JSON.stringify(entry.compatibility ?? { status: 'unknown', rules_version: null, reasons: ['not_checked'], evidence_url: null }),
   ];
   sql.push(
     `INSERT INTO entries(${fields}) VALUES(${values.map(quote)}) ON CONFLICT(id) DO UPDATE SET
       title=excluded.title,purpose=excluded.purpose,tags=excluded.tags,
       image_url=excluded.image_url,units=excluded.units,hero_loadouts=excluded.hero_loadouts,
+      compatibility=excluded.compatibility,
       source_id=excluded.source_id,source_url=excluded.source_url,source_name=excluded.source_name,
       updated_at=CASE WHEN entries.content_hash<>excluded.content_hash THEN excluded.updated_at ELSE entries.updated_at END,
       content_hash=excluded.content_hash,last_seen_at=excluded.last_seen_at;`,

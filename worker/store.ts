@@ -1,4 +1,10 @@
 import type { Entry, EntryInput, EntryOrigin } from '../shared/schema';
+import rules from '../shared/game-rules.json';
+
+// Eligibility is independent of human moderation and share-link expiry.
+// Bumping the reviewed rules automatically retires earlier certifications.
+export const compatibleContentSql = `json_extract(compatibility,'$.status')='compatible'
+  AND json_extract(compatibility,'$.rules_version')='${rules.version}'`;
 
 // Aggregate entries once before joining the small level table. Joining raw
 // entries first scans every published entry for each of the 18 hall levels.
@@ -9,6 +15,7 @@ export const catalogLevelsSql = `SELECT h.level,
       SUM(CASE WHEN kind='base' THEN 1 ELSE 0 END) AS bases,
       SUM(CASE WHEN kind='army' THEN 1 ELSE 0 END) AS armies
     FROM entries WHERE visibility='published' AND village='home' AND link_status<>'expired'
+      AND ${compatibleContentSql}
     GROUP BY town_hall
   ) e ON e.town_hall=h.level
   WHERE h.village='home' ORDER BY h.level DESC`;
@@ -48,6 +55,7 @@ function hydrate(row: Record<string, unknown>, origins: EntryOrigin[]): Entry {
     tags: JSON.parse(String(row.tags)),
     units: JSON.parse(String(row.units)),
     hero_loadouts: JSON.parse(String(row.hero_loadouts ?? '[]')),
+    compatibility: JSON.parse(String(row.compatibility)),
   } as Entry;
 }
 
@@ -88,6 +96,7 @@ export async function ingest(db: D1Database, entries: EntryInput[]) {
         image_url: entry.image_url,
         units: entry.units,
         hero_loadouts: entry.hero_loadouts,
+        compatibility: entry.compatibility,
       }),
     );
     statements.push(
@@ -106,11 +115,12 @@ export async function ingest(db: D1Database, entries: EntryInput[]) {
       db
         .prepare(
           `INSERT INTO entries
-      (id,kind,village,town_hall,title,purpose,tags,game_link,image_url,units,hero_loadouts,source_id,source_url,source_name,content_hash,created_at,updated_at,last_seen_at,link_status)
-      SELECT ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? WHERE (SELECT enabled FROM sources WHERE id=?)=1
+      (id,kind,village,town_hall,title,purpose,tags,game_link,image_url,units,hero_loadouts,source_id,source_url,source_name,content_hash,created_at,updated_at,last_seen_at,link_status,compatibility)
+      SELECT ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? WHERE (SELECT enabled FROM sources WHERE id=?)=1
       ON CONFLICT(id) DO UPDATE SET
         title=excluded.title, purpose=excluded.purpose, tags=excluded.tags,
-        image_url=excluded.image_url, units=excluded.units, hero_loadouts=excluded.hero_loadouts, source_id=excluded.source_id,
+        image_url=excluded.image_url, units=excluded.units, hero_loadouts=excluded.hero_loadouts,
+        compatibility=excluded.compatibility, source_id=excluded.source_id,
         source_url=excluded.source_url, source_name=excluded.source_name,
         updated_at=CASE WHEN entries.content_hash<>excluded.content_hash THEN excluded.updated_at ELSE entries.updated_at END,
         content_hash=excluded.content_hash, last_seen_at=excluded.last_seen_at`,
@@ -135,6 +145,7 @@ export async function ingest(db: D1Database, entries: EntryInput[]) {
           now,
           now,
           entry.game_link ? 'unverified' : 'unavailable',
+          JSON.stringify(entry.compatibility),
           entry.source_id,
         ),
     );

@@ -95,3 +95,15 @@ uv run --directory crawler --frozen python -m atlas --source blueprint --publish
 ```
 
 Blueprint 当前刷新配置内的 TH18 Hydra 攻略；要扩大覆盖，在 `crawler/sources.toml` 中添加已核对的攻略页并补解析测试。搭配出处和配图出处分别展示，缺失宠物不自动用其他攻略填补。跨来源图鉴图片默认引用，启用某攻略源的镜像不会自动镜像其他来源的配图。
+
+## 内容兼容性字段升级
+
+先应用包含 `0003_compatibility.sql` 的迁移，再部署新版 Worker，最后用新版爬虫重新核验各来源快照并发布。迁移保留资料、出处和人工审核状态，但旧行默认 `unknown`，会退出公开列表和统计，直到通过当前规则核验。当前阵型来源没有建筑清单，现有阵型会全部进入待核验；这不代表已证明它们全部过时。
+
+```bash
+npx wrangler d1 migrations apply village-atlas --remote
+npm run deploy
+uv run --directory crawler --frozen python -m atlas --recheck-only --publish
+```
+
+Actions 的来源快照分别保存在 `data/<source-id>/`，手动核验这些快照时指定对应 `--output` 和 `--cache`。新旧 Worker/爬虫不要交错发布：旧爬虫没有兼容性结论，重新入库会把该记录置为待核验。配置建筑证据与更新游戏规则的方法参见采集维护手册“当前版本兼容性”。本次代码调整未执行生产迁移或部署。

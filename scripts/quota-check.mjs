@@ -18,7 +18,7 @@ try {
     envFiles: [],
   });
   const db = proxy.env.DB;
-  for (const file of ['0001_initial.sql', '0002_hero_loadouts.sql']) {
+  for (const file of ['0001_initial.sql', '0002_hero_loadouts.sql', '0003_compatibility.sql']) {
     const sql = (
       await readFile(new URL('../migrations/' + file, import.meta.url), 'utf8')
     ).replace(/^--.*$/gm, '');
@@ -34,6 +34,7 @@ try {
       "INSERT INTO sources(id,name,home_url) VALUES('test','Test','https://example.com')",
     )
     .run();
+  const rules = JSON.parse(await readFile(new URL('../shared/game-rules.json', import.meta.url), 'utf8'));
   await db
     .prepare(
       `WITH RECURSIVE numbers(n) AS (
@@ -48,8 +49,10 @@ try {
     CASE WHEN n%17=0 THEN 'expired' ELSE 'unverified' END FROM numbers`,
     )
     .run();
+  await db.prepare('UPDATE entries SET compatibility=?').bind(JSON.stringify({ status: 'compatible', rules_version: rules.version, reasons: [], evidence_url: 'https://example.com/inventory' })).run();
   const js = ts.transpileModule(
-    await readFile(new URL('../worker/store.ts', import.meta.url), 'utf8'),
+    (await readFile(new URL('../worker/store.ts', import.meta.url), 'utf8'))
+      .replace("import rules from '../shared/game-rules.json';", `const rules = ${JSON.stringify(rules)};`),
     {
       compilerOptions: {
         target: ts.ScriptTarget.ES2022,

@@ -16,6 +16,7 @@ from .adapters import collect
 from .http import Fetcher
 from .snapshot import origin_key, atomic_json
 from .publish import ImageMirror, Publisher
+from .compatibility import checked, load_evidence, RULES
 
 
 def now():
@@ -65,6 +66,10 @@ def main():
     parser.add_argument("--output", default="../data/catalog.json")
     parser.add_argument("--cache", default="../data/http-cache.sqlite")
     parser.add_argument("--publish", action="store_true")
+    parser.add_argument("--layout-evidence", type=Path,
+                        default=Path(__file__).resolve().parents[1] / "layout-evidence.json")
+    parser.add_argument("--recheck-only", action="store_true",
+                        help="Reassess existing snapshot and optionally publish; do not crawl")
     args = parser.parse_args()
     if args.limit is not None and args.limit < 0:
         parser.error("--limit must be nonnegative")
@@ -91,7 +96,8 @@ def main():
         if output.exists()
         else {"entries": [], "runs": []}
     )
-    entries = {origin_key(e): e for e in previous["entries"]}
+    evidence = load_evidence(args.layout_evidence)
+    entries = {origin_key(e): checked(e, evidence) for e in previous["entries"]}
     state_path = (
         Path(args.state) if args.state else output.with_name("crawl-state.json")
     )
@@ -161,6 +167,18 @@ def main():
             )
             return 1
 
+    # Save rechecks even without publication. Old delivery receipts hash the
+    # pre-check content, so the next publish updates existing remote entries too.
+    save_snapshot()
+    if args.recheck_only:
+        from collections import Counter
+        counts = Counter(e["compatibility"]["status"] for e in entries.values())
+        print(json.dumps({"event": "compatibility_rechecked", "rules_version": RULES["version"],
+                          "counts": dict(counts)}, ensure_ascii=False), flush=True)
+        if publisher:
+            publisher.client.close()
+        return 0
+
     failures = False
     for source in selected:
         if time.monotonic() >= deadline:
@@ -189,6 +207,7 @@ def main():
 
         def checkpoint(batch):
             nonlocal accepted, state
+            batch = [checked(record, evidence) for record in batch]
             for record in batch:
                 if mirror:
                     record["image_url"] = mirror.mirror(record["image_url"], fetcher)
@@ -253,6 +272,7 @@ def main():
                 known=entries,
                 checkpoint=checkpoint,
                 should_stop=lambda: time.monotonic() >= deadline,
+                evidence=evidence,
             )
         except Exception as error:
             errors.append(f"{type(error).__name__}: {str(error)[:200]}")

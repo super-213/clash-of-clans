@@ -32,6 +32,21 @@ export const heroLoadoutSchema = z.object({
   notes: z.string().max(500).default(''),
 });
 export type HeroLoadout = z.infer<typeof heroLoadoutSchema>;
+export const compatibilitySchema = z
+  .object({
+    status: z.enum(['compatible', 'incompatible', 'unknown']),
+    rules_version: z.string().min(1).max(100).nullable(),
+    reasons: z.array(z.string().max(300)).max(200),
+    evidence_url: httpsUrl.nullable().default(null),
+  })
+  .superRefine((value, ctx) => {
+    if (value.status === 'compatible' &&
+        (!value.rules_version || value.reasons.length))
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Compatible entries need a rule version and no rejection reasons',
+      });
+  });
 export const entrySchema = z
   .object({
     kind: z.enum(['base', 'army']),
@@ -47,8 +62,18 @@ export const entrySchema = z
     source_name: z.string().min(1).max(100),
     units: z.array(unitSchema).max(100).default([]),
     hero_loadouts: z.array(heroLoadoutSchema).max(8).default([]),
+    compatibility: compatibilitySchema.default({
+      status: 'unknown', rules_version: null,
+      reasons: ['not_checked'], evidence_url: null,
+    }),
   })
   .superRefine((v, ctx) => {
+    if (v.kind === 'base' && v.compatibility.status === 'compatible' &&
+        (!v.game_link || !v.compatibility.evidence_url))
+      ctx.addIssue({
+        code: 'custom', path: ['compatibility'],
+        message: 'Layout inventory evidence required',
+      });
     if (!v.game_link) {
       if (v.kind === 'army')
         ctx.addIssue({

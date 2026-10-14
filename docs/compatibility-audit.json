@@ -1,0 +1,231 @@
+{
+  "checked_at": "2026-10-14T01:46:40.808443+00:00",
+  "observations": 517,
+  "unique_entries": 487,
+  "entries_by_kind": {
+    "base": 445,
+    "army": 42
+  },
+  "compatibility_rules_version": "home-2026-10-14-dc5b2de2122b",
+  "compatibility_by_kind": {
+    "base": {
+      "unknown": 445
+    },
+    "army": {
+      "incompatible": 12,
+      "compatible": 29,
+      "unknown": 1
+    }
+  },
+  "duplicate_origin_rows": 0,
+  "additional_provenance_observations": 30,
+  "cross_hall_shares": [
+    {
+      "kind": "army",
+      "village": "home",
+      "payload": "u4x7-11x8-5x5-1x23-1x62s2x2-3x5-1x35-1x1-1x9",
+      "halls": [
+        15,
+        16
+      ]
+    }
+  ],
+  "policy": "One entry per kind/village/hall/share payload; retain each distinct origin and cross-hall applicability.",
+  "scope": "Read-only local snapshot assessment; no production writes",
+  "rule_sources": {
+    "data_source": "https://github.com/ClashKingInc/ClashKingAssets/tree/b8f42a707fe92d5293d46088bf536450ae422e7b/assets/static_data",
+    "release_notes": [
+      "https://supercell.com/en/games/clashofclans/blog/release-notes/town-hall-18-crash-lands-update/",
+      "https://supercell.com/en/games/clashofclans/blog/release-notes/the-anime-fury-update-is-here/",
+      "https://supercell.com/en/games/clashofclans/blog/release-notes/may-update/",
+      "https://supercell.com/en/games/clashofclans/blog/news/the-awesome-quest-is-here/",
+      "https://supercell.com/en/games/clashofclans/blog/news/weve-revamped-the-clash-of-clans-user-interface/"
+    ]
+  },
+  "quarantined_armies": [
+    {
+      "town_hall": 18,
+      "title": "Hydra Duke Charge",
+      "source_url": "https://clashest.com/coc/army/th18/th18-hydra-duke-charge",
+      "id": "b13ce59f6d055593fb642570253e4eb3d7c56ff81eaf58ba3e7c1fdfe894797f",
+      "compatibility": {
+        "status": "incompatible",
+        "rules_version": "home-2026-10-14-dc5b2de2122b",
+        "reasons": [
+          "capacity_exceeded:spell:12>11"
+        ],
+        "evidence_url": null
+      }
+    },
+    {
+      "town_hall": 17,
+      "title": "Warden Walk Throwers",
+      "source_url": "https://clashest.com/coc/army/th17/th17-warden-walk-throwers",
+      "id": "c8a23c9213ef123dd018c33806efd3d684f694cac7884b194aaff65859d7dfca",
+      "compatibility": {
+        "status": "incompatible",
+        "rules_version": "home-2026-10-14-dc5b2de2122b",
+        "reasons": [
+          "capacity_exceeded:troop:361>340"
+        ],
+        "evidence_url": null
+      }
+    },
+    {
+      "town_hall": 13,
+      "title": "RC Charge Dragons",
+      "source_url": "https://clashest.com/coc/army/th13/th13-rc-charge-dragons",
+      "id": "268bb7cb290165731b6907a93637d4553c14d815310b84f720ad0b41f80f9412",
+      "compatibility": {
+        "status": "incompatible",
+        "rules_version": "home-2026-10-14-dc5b2de2122b",
+        "reasons": [
+          "loadout_not_unlocked:Haste Vial"
+        ],
+        "evidence_url": null
+      }
+    },
+    {
+      "town_hall": 10,
+      "title": "Queen Charge Lalo",
+      "source_url": "https://clashest.com/coc/army/th10/th10-queen-charge-lalo",
+      "id": "083a325a067aff26486832ae77d9c9df3390ffdc13fc8d324c4f0ba5bb5082f3",
+      "compatibility": {
+        "status": "incompatible",
+        "rules_version": "home-2026-10-14-dc5b2de2122b",
+        "reasons": [
+          "loadout_not_unlocked:Healer Puppet"
+        ],
+        "evidence_url": null
+      }
+    },
+    {
+      "town_hall": 8,
+      "title": "GoVaHo (Golem Valk Smash)",
+      "source_url": "https://clashest.com/coc/army/th8/th8-govaho",
+      "id": "f45706aa8043df54893923394e7d5e36877bb83cf988da8a307fae5760fce1f3",
+      "compatibility": {
+        "status": "incompatible",
+        "rules_version": "home-2026-10-14-dc5b2de2122b",
+        "reasons": [
+          "source_hero_slots_exceeded"
+        ],
+        "evidence_url": null
+      }
+    },
+    {
+      "town_hall": 8,
+      "title": "GoHo (Golem + Hog Riders)",
+      "source_url": "https://clashest.com/coc/army/th8/th8-goho",
+      "id": "c366405d758413255348a4a0f643e1cad37dadd3e8a4c3ad053021491648fa36",
+      "compatibility": {
+        "status": "incompatible",
+        "rules_version": "home-2026-10-14-dc5b2de2122b",
+        "reasons": [
+          "source_hero_slots_exceeded"
+        ],
+        "evidence_url": null
+      }
+    },
+    {
+      "town_hall": 16,
+      "title": "RC Charge Mass Dragons",
+      "source_url": "https://clashest.com/coc/army/th16/th16-rc-charge-mass-dragons",
+      "id": "22e95ca73aeabeba5e5770f6df565498619c6d37b317f4bc4723b325168b86ae",
+      "compatibility": {
+        "status": "incompatible",
+        "rules_version": "home-2026-10-14-dc5b2de2122b",
+        "reasons": [
+          "loadout_not_unlocked:Electro Fangs"
+        ],
+        "evidence_url": null
+      }
+    },
+    {
+      "town_hall": 18,
+      "title": "Best TH18 Hydra Attack Strategy + Army Link",
+      "source_url": "https://blueprintcoc.com/blogs/town-hall-18/best-th18-hydra-army-link",
+      "id": "a32c854060f4a82f44eea834fa906f647aaac7b07c967ae75a1642f81bfc93d0",
+      "compatibility": {
+        "status": "unknown",
+        "rules_version": "home-2026-10-14-dc5b2de2122b",
+        "reasons": [
+          "reinforcement_rules_unverified"
+        ],
+        "evidence_url": null
+      }
+    },
+    {
+      "town_hall": 17,
+      "title": "Super Yeti Smash",
+      "source_url": "https://clashest.com/coc/army/th17/th17-super-yeti-smash",
+      "id": "32325f5ff10d6b48647a13a9bbeb017bc349db2c70cb2f14a7937aafe9435317",
+      "compatibility": {
+        "status": "incompatible",
+        "rules_version": "home-2026-10-14-dc5b2de2122b",
+        "reasons": [
+          "capacity_exceeded:troop:363>340"
+        ],
+        "evidence_url": null
+      }
+    },
+    {
+      "town_hall": 14,
+      "title": "RC Walk Dragons",
+      "source_url": "https://clashest.com/coc/army/th14/th14-rc-walk-dragons",
+      "id": "676d11b6d4b1086e8bebda13e3cc8545d359f56b02b7224135a1fd62ea40fdb5",
+      "compatibility": {
+        "status": "incompatible",
+        "rules_version": "home-2026-10-14-dc5b2de2122b",
+        "reasons": [
+          "loadout_not_unlocked:Haste Vial"
+        ],
+        "evidence_url": null
+      }
+    },
+    {
+      "town_hall": 11,
+      "title": "Queen Charge Hybrid",
+      "source_url": "https://clashest.com/coc/army/th11/th11-queen-charge-hybrid",
+      "id": "642bec808c02e942e260b2c66939a4690739be443ece9230acd6861ac77639fe",
+      "compatibility": {
+        "status": "incompatible",
+        "rules_version": "home-2026-10-14-dc5b2de2122b",
+        "reasons": [
+          "loadout_not_unlocked:Healer Puppet",
+          "loadout_not_unlocked:Healing Tome"
+        ],
+        "evidence_url": null
+      }
+    },
+    {
+      "town_hall": 9,
+      "title": "Queen Walk Lalo",
+      "source_url": "https://clashest.com/coc/army/th9/th9-queen-walk-lalo",
+      "id": "9d3c432c8deb0dd400eb494b693338b9b32bdd7a2fee5a492e4e6c93a4392d3d",
+      "compatibility": {
+        "status": "incompatible",
+        "rules_version": "home-2026-10-14-dc5b2de2122b",
+        "reasons": [
+          "loadout_not_unlocked:Healer Puppet"
+        ],
+        "evidence_url": null
+      }
+    },
+    {
+      "town_hall": 8,
+      "title": "Mass Dragons + Lightning",
+      "source_url": "https://clashest.com/coc/army/th8/th8-mass-dragons",
+      "id": "81b28bddb22854145cb0c0e82df0c165917d1e40dcc1e2c58e340edcfda6f73f",
+      "compatibility": {
+        "status": "incompatible",
+        "rules_version": "home-2026-10-14-dc5b2de2122b",
+        "reasons": [
+          "source_hero_slots_exceeded"
+        ],
+        "evidence_url": null
+      }
+    }
+  ],
+  "base_limitation": "All 475 base observations lack an exact reviewed building inventory; unknown does not mean proven outdated."
+}

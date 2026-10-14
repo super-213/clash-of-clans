@@ -1,0 +1,1588 @@
+{
+  "version": "home-2026-10-14-dc5b2de2122b",
+  "reviewed_on": "2026-10-14",
+  "data_revision": "b8f42a707fe92d5293d46088bf536450ae422e7b",
+  "data_source": "https://github.com/ClashKingInc/ClashKingAssets/tree/b8f42a707fe92d5293d46088bf536450ae422e7b/assets/static_data",
+  "source_sha256": {
+    "buildings": "449dbae4ad9d47b8e7270414015561d223d21b910a8a633f7691d7c9850af1be",
+    "troops": "a8b31b53dadea8b00e469c3a97e4ea1b8b39be940f5fbfe4dffd73e5808625c8",
+    "spells": "7cbff39341ad2cc6d0693945086906e19c2cebdd20f3df3b5a336777a5e35bb6",
+    "heroes": "d088dc4109310505b3aad60661bf8d7681cea23063e37fbc52cd393fda976931",
+    "pets": "d3b6bc25471cf5401a8c5794dfccacac97ee57bdad63d29ea24abe81b81a633c",
+    "equipment": "64d2c8e1c5cc9ccba98b8f57f84776d6eed8483c5b591422989f48ed05e9d98d"
+  },
+  "release_notes": [
+    "https://supercell.com/en/games/clashofclans/blog/release-notes/town-hall-18-crash-lands-update/",
+    "https://supercell.com/en/games/clashofclans/blog/release-notes/the-anime-fury-update-is-here/",
+    "https://supercell.com/en/games/clashofclans/blog/release-notes/may-update/",
+    "https://supercell.com/en/games/clashofclans/blog/news/the-awesome-quest-is-here/",
+    "https://supercell.com/en/games/clashofclans/blog/news/weve-revamped-the-clash-of-clans-user-interface/"
+  ],
+  "buildings": {
+    "1": {
+      "Army Camp": 1,
+      "Barracks": 1,
+      "Cannon": 1,
+      "Clan Castle": 1,
+      "Elixir Collector": 1,
+      "Elixir Storage": 1,
+      "Gold Mine": 1,
+      "Gold Storage": 1,
+      "Town Hall": 1
+    },
+    "2": {
+      "Archer Tower": 1,
+      "Army Camp": 1,
+      "Barracks": 1,
+      "Cannon": 2,
+      "Clan Castle": 1,
+      "Elixir Collector": 2,
+      "Elixir Storage": 1,
+      "Gold Mine": 2,
+      "Gold Storage": 1,
+      "Town Hall": 1,
+      "Wall": 25
+    },
+    "3": {
+      "Archer Tower": 1,
+      "Army Camp": 2,
+      "Barracks": 1,
+      "Bomb": 2,
+      "Cannon": 2,
+      "Clan Castle": 1,
+      "Elixir Collector": 3,
+      "Elixir Storage": 2,
+      "Gold Mine": 3,
+      "Gold Storage": 2,
+      "Laboratory": 1,
+      "Mortar": 1,
+      "Town Hall": 1,
+      "Wall": 50
+    },
+    "4": {
+      "Air Defense": 1,
+      "Archer Tower": 2,
+      "Army Camp": 2,
+      "Barracks": 1,
+      "Bomb": 2,
+      "Cannon": 2,
+      "Clan Castle": 1,
+      "Elixir Collector": 4,
+      "Elixir Storage": 2,
+      "Gold Mine": 4,
+      "Gold Storage": 2,
+      "Hero Hall": 1,
+      "Laboratory": 1,
+      "Mortar": 1,
+      "Spring Trap": 2,
+      "Town Hall": 1,
+      "Wall": 75
+    },
+    "5": {
+      "Air Bomb": 2,
+      "Air Defense": 1,
+      "Archer Tower": 3,
+      "Army Camp": 3,
+      "Barracks": 1,
+      "Bomb": 4,
+      "Cannon": 3,
+      "Clan Castle": 1,
+      "Elixir Collector": 5,
+      "Elixir Storage": 2,
+      "Gold Mine": 5,
+      "Gold Storage": 2,
+      "Hero Hall": 1,
+      "Laboratory": 1,
+      "Mortar": 1,
+      "Spell Factory": 1,
+      "Spring Trap": 2,
+      "Town Hall": 1,
+      "Wall": 100,
+      "Wizard Tower": 1
+    },
+    "6": {
+      "Air Bomb": 2,
+      "Air Defense": 2,
+      "Air Sweeper": 1,
+      "Archer Tower": 3,
+      "Army Camp": 3,
+      "Barracks": 1,
+      "Bomb": 4,
+      "Cannon": 3,
+      "Clan Castle": 1,
+      "Elixir Collector": 6,
+      "Elixir Storage": 2,
+      "Giant Bomb": 1,
+      "Gold Mine": 6,
+      "Gold Storage": 2,
+      "Hero Hall": 1,
+      "Laboratory": 1,
+      "Mortar": 2,
+      "Spell Factory": 1,
+      "Spring Trap": 4,
+      "Town Hall": 1,
+      "Wall": 125,
+      "Wizard Tower": 2
+    },
+    "7": {
+      "Air Bomb": 2,
+      "Air Defense": 3,
+      "Air Sweeper": 1,
+      "Archer Tower": 4,
+      "Army Camp": 4,
+      "Barracks": 1,
+      "Bomb": 6,
+      "Cannon": 5,
+      "Clan Castle": 1,
+      "Dark Barracks": 1,
+      "Dark Elixir Drill": 1,
+      "Dark Elixir Storage": 1,
+      "Elixir Collector": 6,
+      "Elixir Storage": 2,
+      "Giant Bomb": 2,
+      "Gold Mine": 6,
+      "Gold Storage": 2,
+      "Hero Hall": 1,
+      "Hidden Tesla": 2,
+      "Laboratory": 1,
+      "Mortar": 3,
+      "Seeking Air Mine": 1,
+      "Spell Factory": 1,
+      "Spring Trap": 4,
+      "Town Hall": 1,
+      "Wall": 175,
+      "Wizard Tower": 2
+    },
+    "8": {
+      "Air Bomb": 4,
+      "Air Defense": 3,
+      "Air Sweeper": 1,
+      "Archer Tower": 5,
+      "Army Camp": 4,
+      "Barracks": 1,
+      "Blacksmith": 1,
+      "Bomb": 6,
+      "Bomb Tower": 1,
+      "Cannon": 5,
+      "Clan Castle": 1,
+      "Dark Barracks": 1,
+      "Dark Elixir Drill": 2,
+      "Dark Elixir Storage": 1,
+      "Dark Spell Factory": 1,
+      "Elixir Collector": 6,
+      "Elixir Storage": 3,
+      "Giant Bomb": 3,
+      "Gold Mine": 6,
+      "Gold Storage": 3,
+      "Hero Hall": 1,
+      "Hidden Tesla": 3,
+      "Laboratory": 1,
+      "Mortar": 4,
+      "Seeking Air Mine": 2,
+      "Skeleton Trap": 2,
+      "Spell Factory": 1,
+      "Spring Trap": 6,
+      "Town Hall": 1,
+      "Wall": 225,
+      "Wizard Tower": 3
+    },
+    "9": {
+      "Air Bomb": 4,
+      "Air Defense": 4,
+      "Air Sweeper": 2,
+      "Archer Tower": 6,
+      "Army Camp": 4,
+      "Barracks": 1,
+      "Blacksmith": 1,
+      "Bomb": 6,
+      "Bomb Tower": 1,
+      "Cannon": 5,
+      "Clan Castle": 1,
+      "Dark Barracks": 1,
+      "Dark Elixir Drill": 3,
+      "Dark Elixir Storage": 1,
+      "Dark Spell Factory": 1,
+      "Elixir Collector": 7,
+      "Elixir Storage": 4,
+      "Giant Bomb": 4,
+      "Gold Mine": 7,
+      "Gold Storage": 4,
+      "Helper Hut": 1,
+      "Hero Hall": 1,
+      "Hidden Tesla": 4,
+      "Laboratory": 1,
+      "Mortar": 4,
+      "Seeking Air Mine": 4,
+      "Skeleton Trap": 2,
+      "Spell Factory": 1,
+      "Spring Trap": 6,
+      "Town Hall": 1,
+      "Wall": 250,
+      "Wizard Tower": 4,
+      "X-Bow": 2
+    },
+    "10": {
+      "Air Bomb": 5,
+      "Air Defense": 4,
+      "Air Sweeper": 2,
+      "Archer Tower": 7,
+      "Army Camp": 4,
+      "Barracks": 1,
+      "Blacksmith": 1,
+      "Bomb": 6,
+      "Bomb Tower": 2,
+      "Cannon": 6,
+      "Clan Castle": 1,
+      "Dark Barracks": 1,
+      "Dark Elixir Drill": 3,
+      "Dark Elixir Storage": 1,
+      "Dark Spell Factory": 1,
+      "Elixir Collector": 7,
+      "Elixir Storage": 4,
+      "Giant Bomb": 5,
+      "Gold Mine": 7,
+      "Gold Storage": 4,
+      "Helper Hut": 1,
+      "Hero Hall": 1,
+      "Hidden Tesla": 4,
+      "Inferno Tower": 2,
+      "Laboratory": 1,
+      "Mortar": 4,
+      "Seeking Air Mine": 5,
+      "Skeleton Trap": 3,
+      "Spell Factory": 1,
+      "Spring Trap": 6,
+      "Town Hall": 1,
+      "Wall": 275,
+      "Wizard Tower": 4,
+      "X-Bow": 3
+    },
+    "11": {
+      "Air Bomb": 5,
+      "Air Defense": 4,
+      "Air Sweeper": 2,
+      "Archer Tower": 8,
+      "Army Camp": 4,
+      "Barracks": 1,
+      "Blacksmith": 1,
+      "Bomb": 6,
+      "Bomb Tower": 2,
+      "Cannon": 7,
+      "Clan Castle": 1,
+      "Crafting Station": 1,
+      "Dark Barracks": 1,
+      "Dark Elixir Drill": 3,
+      "Dark Elixir Storage": 1,
+      "Dark Spell Factory": 1,
+      "Eagle Artillery": 1,
+      "Elixir Collector": 7,
+      "Elixir Storage": 4,
+      "Giant Bomb": 5,
+      "Gold Mine": 7,
+      "Gold Storage": 4,
+      "Helper Hut": 1,
+      "Hero Hall": 1,
+      "Hidden Tesla": 4,
+      "Inferno Tower": 2,
+      "Laboratory": 1,
+      "Mortar": 4,
+      "Seeking Air Mine": 5,
+      "Skeleton Trap": 3,
+      "Spell Factory": 1,
+      "Spring Trap": 6,
+      "Tornado Trap": 1,
+      "Town Hall": 1,
+      "Wall": 300,
+      "Wizard Tower": 5,
+      "X-Bow": 4
+    },
+    "12": {
+      "Air Bomb": 6,
+      "Air Defense": 4,
+      "Air Sweeper": 2,
+      "Archer Tower": 8,
+      "Army Camp": 4,
+      "Barracks": 1,
+      "Blacksmith": 1,
+      "Bomb": 6,
+      "Bomb Tower": 2,
+      "Cannon": 7,
+      "Clan Castle": 1,
+      "Crafting Station": 1,
+      "Dark Barracks": 1,
+      "Dark Elixir Drill": 3,
+      "Dark Elixir Storage": 1,
+      "Dark Spell Factory": 1,
+      "Eagle Artillery": 1,
+      "Elixir Collector": 7,
+      "Elixir Storage": 4,
+      "Giant Bomb": 6,
+      "Gold Mine": 7,
+      "Gold Storage": 4,
+      "Helper Hut": 1,
+      "Hero Hall": 1,
+      "Hidden Tesla": 5,
+      "Inferno Tower": 3,
+      "Laboratory": 1,
+      "Mortar": 4,
+      "Seeking Air Mine": 6,
+      "Skeleton Trap": 3,
+      "Spell Factory": 1,
+      "Spring Trap": 8,
+      "Tornado Trap": 1,
+      "Town Hall": 1,
+      "Wall": 300,
+      "Wizard Tower": 5,
+      "Workshop": 1,
+      "X-Bow": 4
+    },
+    "13": {
+      "Air Bomb": 6,
+      "Air Defense": 4,
+      "Air Sweeper": 2,
+      "Archer Tower": 8,
+      "Army Camp": 4,
+      "Barracks": 1,
+      "Blacksmith": 1,
+      "Bomb": 7,
+      "Bomb Tower": 2,
+      "Cannon": 7,
+      "Clan Castle": 1,
+      "Crafting Station": 1,
+      "Dark Barracks": 1,
+      "Dark Elixir Drill": 3,
+      "Dark Elixir Storage": 1,
+      "Dark Spell Factory": 1,
+      "Eagle Artillery": 1,
+      "Elixir Collector": 7,
+      "Elixir Storage": 4,
+      "Giant Bomb": 6,
+      "Gold Mine": 7,
+      "Gold Storage": 4,
+      "Helper Hut": 1,
+      "Hero Hall": 1,
+      "Hidden Tesla": 5,
+      "Inferno Tower": 3,
+      "Laboratory": 1,
+      "Mortar": 4,
+      "Scattershot": 2,
+      "Seeking Air Mine": 7,
+      "Skeleton Trap": 3,
+      "Spell Factory": 1,
+      "Spring Trap": 9,
+      "Tornado Trap": 1,
+      "Town Hall": 1,
+      "Wall": 300,
+      "Wizard Tower": 5,
+      "Workshop": 1,
+      "X-Bow": 4
+    },
+    "14": {
+      "Air Bomb": 7,
+      "Air Defense": 4,
+      "Air Sweeper": 2,
+      "Archer Tower": 8,
+      "Army Camp": 4,
+      "Barracks": 1,
+      "Blacksmith": 1,
+      "Bomb": 8,
+      "Bomb Tower": 2,
+      "Cannon": 7,
+      "Clan Castle": 1,
+      "Crafting Station": 1,
+      "Dark Barracks": 1,
+      "Dark Elixir Drill": 3,
+      "Dark Elixir Storage": 1,
+      "Dark Spell Factory": 1,
+      "Eagle Artillery": 1,
+      "Elixir Collector": 7,
+      "Elixir Storage": 4,
+      "Giant Bomb": 7,
+      "Gold Mine": 7,
+      "Gold Storage": 4,
+      "Helper Hut": 1,
+      "Hero Hall": 1,
+      "Hidden Tesla": 5,
+      "Inferno Tower": 3,
+      "Laboratory": 1,
+      "Mortar": 4,
+      "Pet House": 1,
+      "Scattershot": 2,
+      "Seeking Air Mine": 8,
+      "Skeleton Trap": 4,
+      "Spell Factory": 1,
+      "Spring Trap": 9,
+      "Tornado Trap": 1,
+      "Town Hall": 1,
+      "Wall": 325,
+      "Wizard Tower": 5,
+      "Workshop": 1,
+      "X-Bow": 4
+    },
+    "15": {
+      "Air Bomb": 7,
+      "Air Defense": 4,
+      "Air Sweeper": 2,
+      "Archer Tower": 8,
+      "Army Camp": 4,
+      "Barracks": 1,
+      "Blacksmith": 1,
+      "Bomb": 8,
+      "Bomb Tower": 2,
+      "Cannon": 7,
+      "Clan Castle": 1,
+      "Crafting Station": 1,
+      "Dark Barracks": 1,
+      "Dark Elixir Drill": 3,
+      "Dark Elixir Storage": 1,
+      "Dark Spell Factory": 1,
+      "Eagle Artillery": 1,
+      "Elixir Collector": 7,
+      "Elixir Storage": 4,
+      "Giant Bomb": 7,
+      "Gold Mine": 7,
+      "Gold Storage": 4,
+      "Helper Hut": 1,
+      "Hero Hall": 1,
+      "Hidden Tesla": 5,
+      "Inferno Tower": 3,
+      "Laboratory": 1,
+      "Monolith": 1,
+      "Mortar": 4,
+      "Pet House": 1,
+      "Scattershot": 2,
+      "Seeking Air Mine": 8,
+      "Skeleton Trap": 4,
+      "Spell Factory": 1,
+      "Spell Tower": 2,
+      "Spring Trap": 9,
+      "Tornado Trap": 1,
+      "Town Hall": 1,
+      "Wall": 325,
+      "Wizard Tower": 5,
+      "Workshop": 1,
+      "X-Bow": 4
+    },
+    "16": {
+      "Air Bomb": 7,
+      "Air Defense": 4,
+      "Air Sweeper": 2,
+      "Archer Tower": 4,
+      "Army Camp": 4,
+      "Barracks": 1,
+      "Blacksmith": 1,
+      "Bomb": 8,
+      "Bomb Tower": 2,
+      "Cannon": 3,
+      "Clan Castle": 1,
+      "Crafting Station": 1,
+      "Dark Barracks": 1,
+      "Dark Elixir Drill": 3,
+      "Dark Elixir Storage": 1,
+      "Dark Spell Factory": 1,
+      "Eagle Artillery": 1,
+      "Elixir Collector": 7,
+      "Elixir Storage": 4,
+      "Giant Bomb": 7,
+      "Gold Mine": 7,
+      "Gold Storage": 4,
+      "Helper Hut": 1,
+      "Hero Hall": 1,
+      "Hidden Tesla": 5,
+      "Inferno Tower": 3,
+      "Laboratory": 1,
+      "Monolith": 1,
+      "Mortar": 4,
+      "Multi-Archer Tower": 2,
+      "Pet House": 1,
+      "Ricochet Cannon": 2,
+      "Scattershot": 2,
+      "Seeking Air Mine": 8,
+      "Skeleton Trap": 4,
+      "Spell Factory": 1,
+      "Spell Tower": 2,
+      "Spring Trap": 9,
+      "Tornado Trap": 1,
+      "Town Hall": 1,
+      "Wall": 325,
+      "Wizard Tower": 5,
+      "Workshop": 1,
+      "X-Bow": 4
+    },
+    "17": {
+      "Air Bomb": 7,
+      "Air Defense": 4,
+      "Air Sweeper": 2,
+      "Archer Tower": 2,
+      "Army Camp": 4,
+      "Barracks": 1,
+      "Blacksmith": 1,
+      "Bomb": 8,
+      "Bomb Tower": 2,
+      "Clan Castle": 1,
+      "Crafting Station": 1,
+      "Dark Barracks": 1,
+      "Dark Elixir Drill": 3,
+      "Dark Elixir Storage": 1,
+      "Dark Spell Factory": 1,
+      "Elixir Collector": 7,
+      "Elixir Storage": 4,
+      "Firespitter": 2,
+      "Giant Bomb": 8,
+      "Giga Bomb": 1,
+      "Gold Mine": 7,
+      "Gold Storage": 4,
+      "Helper Hut": 1,
+      "Hero Hall": 1,
+      "Hidden Tesla": 5,
+      "Inferno Tower": 3,
+      "Laboratory": 1,
+      "Monolith": 1,
+      "Mortar": 4,
+      "Multi-Archer Tower": 3,
+      "Multi-Gear Tower": 1,
+      "Pet House": 1,
+      "Ricochet Cannon": 3,
+      "Scattershot": 2,
+      "Seeking Air Mine": 9,
+      "Skeleton Trap": 4,
+      "Spell Factory": 1,
+      "Spell Tower": 2,
+      "Spring Trap": 9,
+      "Tornado Trap": 1,
+      "Town Hall": 1,
+      "Wall": 325,
+      "Wizard Tower": 5,
+      "Workshop": 1,
+      "X-Bow": 4
+    },
+    "18": {
+      "Air Bomb": 8,
+      "Air Defense": 4,
+      "Air Sweeper": 2,
+      "Archer Tower": 2,
+      "Army Camp": 4,
+      "Barracks": 1,
+      "Blacksmith": 1,
+      "Bomb": 8,
+      "Bomb Tower": 2,
+      "Clan Castle": 1,
+      "Crafting Station": 1,
+      "Dark Barracks": 1,
+      "Dark Elixir Drill": 3,
+      "Dark Elixir Storage": 1,
+      "Dark Spell Factory": 1,
+      "Elixir Collector": 7,
+      "Elixir Storage": 4,
+      "Firespitter": 2,
+      "Giant Bomb": 8,
+      "Giga Bomb": 1,
+      "Gold Mine": 7,
+      "Gold Storage": 4,
+      "Helper Hut": 1,
+      "Hero Hall": 1,
+      "Hidden Tesla": 5,
+      "Inferno Tower": 3,
+      "Laboratory": 1,
+      "Monolith": 1,
+      "Mortar": 4,
+      "Multi-Archer Tower": 3,
+      "Multi-Gear Tower": 1,
+      "Pet House": 1,
+      "Revenge Tower": 1,
+      "Ricochet Cannon": 3,
+      "Scattershot": 2,
+      "Seeking Air Mine": 9,
+      "Skeleton Trap": 4,
+      "Spell Factory": 1,
+      "Spell Tower": 2,
+      "Spring Trap": 9,
+      "Super Wizard Tower": 2,
+      "Tornado Trap": 1,
+      "Town Hall": 1,
+      "Wall": 325,
+      "Wizard Tower": 2,
+      "Workshop": 1,
+      "X-Bow": 4
+    }
+  },
+  "optional_buildings": {
+    "Builder's Hut": 5,
+    "B.O.B's Hut": 1
+  },
+  "crafted_defenses": [
+    "Hot Candle",
+    "Hero Hunter",
+    "Cake-A-Pult"
+  ],
+  "units": {
+    "u0": {
+      "name": "Barbarian",
+      "group": "troop",
+      "min_hall": 1,
+      "housing": 1
+    },
+    "u1": {
+      "name": "Archer",
+      "group": "troop",
+      "min_hall": 2,
+      "housing": 1
+    },
+    "u2": {
+      "name": "Goblin",
+      "group": "troop",
+      "min_hall": 2,
+      "housing": 1
+    },
+    "u3": {
+      "name": "Giant",
+      "group": "troop",
+      "min_hall": 2,
+      "housing": 5
+    },
+    "u4": {
+      "name": "Wall Breaker",
+      "group": "troop",
+      "min_hall": 3,
+      "housing": 2
+    },
+    "u5": {
+      "name": "Balloon",
+      "group": "troop",
+      "min_hall": 4,
+      "housing": 5
+    },
+    "u6": {
+      "name": "Wizard",
+      "group": "troop",
+      "min_hall": 5,
+      "housing": 4
+    },
+    "u7": {
+      "name": "Healer",
+      "group": "troop",
+      "min_hall": 6,
+      "housing": 14
+    },
+    "u8": {
+      "name": "Dragon",
+      "group": "troop",
+      "min_hall": 7,
+      "housing": 20
+    },
+    "u9": {
+      "name": "P.E.K.K.A",
+      "group": "troop",
+      "min_hall": 8,
+      "housing": 25
+    },
+    "u10": {
+      "name": "Minion",
+      "group": "troop",
+      "min_hall": 7,
+      "housing": 2
+    },
+    "u11": {
+      "name": "Hog Rider",
+      "group": "troop",
+      "min_hall": 7,
+      "housing": 5
+    },
+    "u12": {
+      "name": "Valkyrie",
+      "group": "troop",
+      "min_hall": 8,
+      "housing": 8
+    },
+    "u13": {
+      "name": "Golem",
+      "group": "troop",
+      "min_hall": 8,
+      "housing": 30
+    },
+    "u15": {
+      "name": "Witch",
+      "group": "troop",
+      "min_hall": 9,
+      "housing": 12
+    },
+    "u17": {
+      "name": "Lava Hound",
+      "group": "troop",
+      "min_hall": 9,
+      "housing": 30
+    },
+    "u22": {
+      "name": "Bowler",
+      "group": "troop",
+      "min_hall": 10,
+      "housing": 6
+    },
+    "u23": {
+      "name": "Baby Dragon",
+      "group": "troop",
+      "min_hall": 9,
+      "housing": 10
+    },
+    "u24": {
+      "name": "Miner",
+      "group": "troop",
+      "min_hall": 10,
+      "housing": 6
+    },
+    "u26": {
+      "name": "Super Barbarian",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 5
+    },
+    "u27": {
+      "name": "Super Archer",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 12
+    },
+    "u28": {
+      "name": "Super Wall Breaker",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 8
+    },
+    "u29": {
+      "name": "Super Giant",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 10
+    },
+    "u51": {
+      "name": "Wall Wrecker",
+      "group": "siege",
+      "min_hall": 10,
+      "housing": 1
+    },
+    "u52": {
+      "name": "Battle Blimp",
+      "group": "siege",
+      "min_hall": 10,
+      "housing": 1
+    },
+    "u53": {
+      "name": "Yeti",
+      "group": "troop",
+      "min_hall": 12,
+      "housing": 18
+    },
+    "u55": {
+      "name": "Sneaky Goblin",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 3
+    },
+    "u56": {
+      "name": "Super Miner",
+      "group": "troop",
+      "min_hall": 12,
+      "housing": 24
+    },
+    "u57": {
+      "name": "Rocket Balloon",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 8
+    },
+    "u58": {
+      "name": "Ice Golem",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 15
+    },
+    "u59": {
+      "name": "Electro Dragon",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 30
+    },
+    "u62": {
+      "name": "Stone Slammer",
+      "group": "siege",
+      "min_hall": 10,
+      "housing": 1
+    },
+    "u63": {
+      "name": "Inferno Dragon",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 15
+    },
+    "u64": {
+      "name": "Super Valkyrie",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 20
+    },
+    "u65": {
+      "name": "Dragon Rider",
+      "group": "troop",
+      "min_hall": 13,
+      "housing": 25
+    },
+    "u66": {
+      "name": "Super Witch",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 40
+    },
+    "u75": {
+      "name": "Siege Barracks",
+      "group": "siege",
+      "min_hall": 10,
+      "housing": 1
+    },
+    "u76": {
+      "name": "Ice Hound",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 40
+    },
+    "u80": {
+      "name": "Super Bowler",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 30
+    },
+    "u81": {
+      "name": "Super Dragon",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 40
+    },
+    "u82": {
+      "name": "Headhunter",
+      "group": "troop",
+      "min_hall": 12,
+      "housing": 6
+    },
+    "u83": {
+      "name": "Super Wizard",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 10
+    },
+    "u84": {
+      "name": "Super Minion",
+      "group": "troop",
+      "min_hall": 11,
+      "housing": 12
+    },
+    "u87": {
+      "name": "Log Launcher",
+      "group": "siege",
+      "min_hall": 10,
+      "housing": 1
+    },
+    "u91": {
+      "name": "Flame Flinger",
+      "group": "siege",
+      "min_hall": 10,
+      "housing": 1
+    },
+    "u92": {
+      "name": "Battle Drill",
+      "group": "siege",
+      "min_hall": 10,
+      "housing": 1
+    },
+    "u95": {
+      "name": "Electro Titan",
+      "group": "troop",
+      "min_hall": 14,
+      "housing": 32
+    },
+    "u97": {
+      "name": "Apprentice Warden",
+      "group": "troop",
+      "min_hall": 13,
+      "housing": 20
+    },
+    "u98": {
+      "name": "Super Hog Rider",
+      "group": "troop",
+      "min_hall": 12,
+      "housing": 12
+    },
+    "u109": {
+      "name": "Ruin Witch",
+      "group": "troop",
+      "min_hall": 16,
+      "housing": 26
+    },
+    "u110": {
+      "name": "Root Rider",
+      "group": "troop",
+      "min_hall": 15,
+      "housing": 20
+    },
+    "u123": {
+      "name": "Druid",
+      "group": "troop",
+      "min_hall": 14,
+      "housing": 16
+    },
+    "u132": {
+      "name": "Thrower",
+      "group": "troop",
+      "min_hall": 16,
+      "housing": 16
+    },
+    "u135": {
+      "name": "Troop Launcher",
+      "group": "siege",
+      "min_hall": 10,
+      "housing": 1
+    },
+    "u147": {
+      "name": "Super Yeti",
+      "group": "troop",
+      "min_hall": 12,
+      "housing": 35
+    },
+    "u150": {
+      "name": "Furnace",
+      "group": "troop",
+      "min_hall": 15,
+      "housing": 18
+    },
+    "u177": {
+      "name": "Meteor Golem",
+      "group": "troop",
+      "min_hall": 17,
+      "housing": 40
+    },
+    "u188": {
+      "name": "Sky Wagon",
+      "group": "siege",
+      "min_hall": 10,
+      "housing": 1
+    },
+    "s0": {
+      "name": "Lightning Spell",
+      "group": "spell",
+      "min_hall": 5,
+      "housing": 1
+    },
+    "s1": {
+      "name": "Healing Spell",
+      "group": "spell",
+      "min_hall": 6,
+      "housing": 2
+    },
+    "s2": {
+      "name": "Rage Spell",
+      "group": "spell",
+      "min_hall": 7,
+      "housing": 2
+    },
+    "s3": {
+      "name": "Jump Spell",
+      "group": "spell",
+      "min_hall": 9,
+      "housing": 2
+    },
+    "s5": {
+      "name": "Freeze Spell",
+      "group": "spell",
+      "min_hall": 9,
+      "housing": 1
+    },
+    "s9": {
+      "name": "Poison Spell",
+      "group": "spell",
+      "min_hall": 8,
+      "housing": 1
+    },
+    "s10": {
+      "name": "Earthquake Spell",
+      "group": "spell",
+      "min_hall": 8,
+      "housing": 1
+    },
+    "s11": {
+      "name": "Haste Spell",
+      "group": "spell",
+      "min_hall": 9,
+      "housing": 1
+    },
+    "s16": {
+      "name": "Clone Spell",
+      "group": "spell",
+      "min_hall": 10,
+      "housing": 3
+    },
+    "s17": {
+      "name": "Skeleton Spell",
+      "group": "spell",
+      "min_hall": 9,
+      "housing": 1
+    },
+    "s28": {
+      "name": "Bat Spell",
+      "group": "spell",
+      "min_hall": 10,
+      "housing": 1
+    },
+    "s35": {
+      "name": "Invisibility Spell",
+      "group": "spell",
+      "min_hall": 11,
+      "housing": 1
+    },
+    "s53": {
+      "name": "Recall Spell",
+      "group": "spell",
+      "min_hall": 13,
+      "housing": 2
+    },
+    "s70": {
+      "name": "Overgrowth Spell",
+      "group": "spell",
+      "min_hall": 12,
+      "housing": 2
+    },
+    "s98": {
+      "name": "Revive Spell",
+      "group": "spell",
+      "min_hall": 15,
+      "housing": 2
+    },
+    "s109": {
+      "name": "Ice Block Spell",
+      "group": "spell",
+      "min_hall": 14,
+      "housing": 1
+    },
+    "s120": {
+      "name": "Totem Spell",
+      "group": "spell",
+      "min_hall": 16,
+      "housing": 1
+    },
+    "s123": {
+      "name": "Angry Spell",
+      "group": "spell",
+      "min_hall": 15,
+      "housing": 1
+    },
+    "h0": {
+      "name": "Barbarian King",
+      "group": "hero",
+      "min_hall": 4,
+      "housing": 0
+    },
+    "h1": {
+      "name": "Archer Queen",
+      "group": "hero",
+      "min_hall": 8,
+      "housing": 0
+    },
+    "h2": {
+      "name": "Grand Warden",
+      "group": "hero",
+      "min_hall": 11,
+      "housing": 0
+    },
+    "h4": {
+      "name": "Royal Champion",
+      "group": "hero",
+      "min_hall": 13,
+      "housing": 0
+    },
+    "h6": {
+      "name": "Minion Prince",
+      "group": "hero",
+      "min_hall": 9,
+      "housing": 0
+    },
+    "h7": {
+      "name": "Dragon Duke",
+      "group": "hero",
+      "min_hall": 15,
+      "housing": 0
+    },
+    "p0": {
+      "name": "L.A.S.S.I",
+      "group": "pet",
+      "min_hall": 14,
+      "housing": 0
+    },
+    "p1": {
+      "name": "Mighty Yak",
+      "group": "pet",
+      "min_hall": 14,
+      "housing": 0
+    },
+    "p2": {
+      "name": "Electro Owl",
+      "group": "pet",
+      "min_hall": 14,
+      "housing": 0
+    },
+    "p3": {
+      "name": "Unicorn",
+      "group": "pet",
+      "min_hall": 14,
+      "housing": 0
+    },
+    "p4": {
+      "name": "Phoenix",
+      "group": "pet",
+      "min_hall": 15,
+      "housing": 0
+    },
+    "p7": {
+      "name": "Poison Lizard",
+      "group": "pet",
+      "min_hall": 15,
+      "housing": 0
+    },
+    "p8": {
+      "name": "Diggy",
+      "group": "pet",
+      "min_hall": 15,
+      "housing": 0
+    },
+    "p9": {
+      "name": "Frosty",
+      "group": "pet",
+      "min_hall": 15,
+      "housing": 0
+    },
+    "p10": {
+      "name": "Spirit Fox",
+      "group": "pet",
+      "min_hall": 16,
+      "housing": 0
+    },
+    "p11": {
+      "name": "Angry Jelly",
+      "group": "pet",
+      "min_hall": 16,
+      "housing": 0
+    },
+    "p16": {
+      "name": "Sneezy",
+      "group": "pet",
+      "min_hall": 17,
+      "housing": 0
+    },
+    "p17": {
+      "name": "Greedy Raven",
+      "group": "pet",
+      "min_hall": 18,
+      "housing": 0
+    },
+    "e0": {
+      "name": "Barbarian Puppet",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Barbarian King"
+    },
+    "e1": {
+      "name": "Rage Vial",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Barbarian King"
+    },
+    "e2": {
+      "name": "Archer Puppet",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Archer Queen"
+    },
+    "e3": {
+      "name": "Invisibility Vial",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Archer Queen"
+    },
+    "e4": {
+      "name": "Eternal Tome",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Grand Warden"
+    },
+    "e5": {
+      "name": "Life Gem",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Grand Warden"
+    },
+    "e6": {
+      "name": "Seeking Shield",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Royal Champion"
+    },
+    "e7": {
+      "name": "Royal Gem",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Royal Champion"
+    },
+    "e8": {
+      "name": "Earthquake Boots",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Barbarian King"
+    },
+    "e9": {
+      "name": "Hog Rider Puppet",
+      "group": "equipment",
+      "min_hall": 14,
+      "housing": 0,
+      "hero": "Royal Champion"
+    },
+    "e10": {
+      "name": "Giant Gauntlet",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Barbarian King"
+    },
+    "e11": {
+      "name": "Vampstache",
+      "group": "equipment",
+      "min_hall": 10,
+      "housing": 0,
+      "hero": "Barbarian King"
+    },
+    "e12": {
+      "name": "Haste Vial",
+      "group": "equipment",
+      "min_hall": 15,
+      "housing": 0,
+      "hero": "Royal Champion"
+    },
+    "e13": {
+      "name": "Rocket Spear",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Royal Champion"
+    },
+    "e14": {
+      "name": "Spiky Ball",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Barbarian King"
+    },
+    "e15": {
+      "name": "Frozen Arrow",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Archer Queen"
+    },
+    "e16": {
+      "name": "Monolith Arrow",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Archer Queen"
+    },
+    "e17": {
+      "name": "Giant Arrow",
+      "group": "equipment",
+      "min_hall": 9,
+      "housing": 0,
+      "hero": "Archer Queen"
+    },
+    "e19": {
+      "name": "Heroic Torch",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Grand Warden"
+    },
+    "e20": {
+      "name": "Healer Puppet",
+      "group": "equipment",
+      "min_hall": 12,
+      "housing": 0,
+      "hero": "Archer Queen"
+    },
+    "e22": {
+      "name": "Fireball",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Grand Warden"
+    },
+    "e24": {
+      "name": "Rage Gem",
+      "group": "equipment",
+      "min_hall": 11,
+      "housing": 0,
+      "hero": "Grand Warden"
+    },
+    "e32": {
+      "name": "Snake Bracelet",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Barbarian King"
+    },
+    "e34": {
+      "name": "Healing Tome",
+      "group": "equipment",
+      "min_hall": 13,
+      "housing": 0,
+      "hero": "Grand Warden"
+    },
+    "e35": {
+      "name": "Dark Crown",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Minion Prince"
+    },
+    "e39": {
+      "name": "Magic Mirror",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Archer Queen"
+    },
+    "e40": {
+      "name": "Electro Boots",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Royal Champion"
+    },
+    "e41": {
+      "name": "Lavaloon Puppet",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Grand Warden"
+    },
+    "e42": {
+      "name": "Henchmen Puppet",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Minion Prince"
+    },
+    "e43": {
+      "name": "Dark Orb",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Minion Prince"
+    },
+    "e44": {
+      "name": "Metal Pants",
+      "group": "equipment",
+      "min_hall": 10,
+      "housing": 0,
+      "hero": "Minion Prince"
+    },
+    "e47": {
+      "name": "Noble Iron",
+      "group": "equipment",
+      "min_hall": 12,
+      "housing": 0,
+      "hero": "Minion Prince"
+    },
+    "e48": {
+      "name": "Action Figure",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Archer Queen"
+    },
+    "e49": {
+      "name": "Meteor Staff",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Minion Prince"
+    },
+    "e50": {
+      "name": "Frost Flake",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Royal Champion"
+    },
+    "e51": {
+      "name": "Stick Horse",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Barbarian King"
+    },
+    "e52": {
+      "name": "Fire Heart",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Dragon Duke"
+    },
+    "e53": {
+      "name": "Rocket Backpack",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Dragon Duke"
+    },
+    "e56": {
+      "name": "Stun Blaster",
+      "group": "equipment",
+      "min_hall": 16,
+      "housing": 0,
+      "hero": "Dragon Duke"
+    },
+    "e57": {
+      "name": "Flame Blower",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Dragon Duke"
+    },
+    "e59": {
+      "name": "Electro Fangs",
+      "group": "equipment",
+      "min_hall": 17,
+      "housing": 0,
+      "hero": "Dragon Duke"
+    },
+    "e60": {
+      "name": "Revenge Deck",
+      "group": "equipment",
+      "min_hall": 8,
+      "housing": 0,
+      "hero": "Dragon Duke"
+    }
+  },
+  "capacity": {
+    "1": {
+      "troop": 20,
+      "spell": 0,
+      "siege": 3,
+      "hero": 0
+    },
+    "2": {
+      "troop": 30,
+      "spell": 0,
+      "siege": 3,
+      "hero": 0
+    },
+    "3": {
+      "troop": 70,
+      "spell": 0,
+      "siege": 3,
+      "hero": 0
+    },
+    "4": {
+      "troop": 80,
+      "spell": 0,
+      "siege": 3,
+      "hero": 1
+    },
+    "5": {
+      "troop": 135,
+      "spell": 2,
+      "siege": 3,
+      "hero": 1
+    },
+    "6": {
+      "troop": 150,
+      "spell": 4,
+      "siege": 3,
+      "hero": 1
+    },
+    "7": {
+      "troop": 200,
+      "spell": 6,
+      "siege": 3,
+      "hero": 1
+    },
+    "8": {
+      "troop": 200,
+      "spell": 7,
+      "siege": 3,
+      "hero": 1
+    },
+    "9": {
+      "troop": 220,
+      "spell": 9,
+      "siege": 3,
+      "hero": 2
+    },
+    "10": {
+      "troop": 240,
+      "spell": 11,
+      "siege": 3,
+      "hero": 2
+    },
+    "11": {
+      "troop": 260,
+      "spell": 11,
+      "siege": 3,
+      "hero": 3
+    },
+    "12": {
+      "troop": 280,
+      "spell": 11,
+      "siege": 3,
+      "hero": 3
+    },
+    "13": {
+      "troop": 300,
+      "spell": 11,
+      "siege": 3,
+      "hero": 4
+    },
+    "14": {
+      "troop": 300,
+      "spell": 11,
+      "siege": 3,
+      "hero": 4
+    },
+    "15": {
+      "troop": 320,
+      "spell": 11,
+      "siege": 3,
+      "hero": 4
+    },
+    "16": {
+      "troop": 320,
+      "spell": 11,
+      "siege": 3,
+      "hero": 4
+    },
+    "17": {
+      "troop": 340,
+      "spell": 11,
+      "siege": 3,
+      "hero": 4
+    },
+    "18": {
+      "troop": 360,
+      "spell": 11,
+      "siege": 3,
+      "hero": 4
+    }
+  }
+}

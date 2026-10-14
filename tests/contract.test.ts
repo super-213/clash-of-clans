@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { entrySchema } from '../shared/schema';
 import { entryId } from '../worker/store';
+import rules from '../shared/game-rules.json';
 
 const base = {
   kind: 'base',
@@ -17,6 +18,13 @@ const base = {
 };
 
 describe('ingestion contract', () => {
+  it('quarantines legacy entries and requires exact layout evidence for certification', () => {
+    expect(entrySchema.parse(base).compatibility.status).toBe('unknown');
+    const compatibility = { status: 'compatible', rules_version: rules.version, reasons: [], evidence_url: null };
+    expect(entrySchema.safeParse({ ...base, compatibility }).success).toBe(false);
+    expect(entrySchema.safeParse({ ...base, compatibility: { ...compatibility, evidence_url: base.source_url } }).success).toBe(true);
+    expect(entrySchema.safeParse({ ...base, compatibility: { ...compatibility, rules_version: null } }).success).toBe(false);
+  });
   it('validates associated hero loadouts and defaults legacy records to unknown', () => {
     expect(entrySchema.parse(base).hero_loadouts).toEqual([]);
     const item = {

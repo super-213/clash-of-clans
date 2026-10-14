@@ -11,6 +11,7 @@ from urllib.parse import parse_qs, urlsplit
 
 from .models import fingerprint
 from .snapshot import origin_key, atomic_json
+from .compatibility import RULES
 
 
 def audit(entries):
@@ -27,6 +28,12 @@ def audit(entries):
         "observations": len(entries),
         "unique_entries": len(unique),
         "entries_by_kind": dict(Counter(r["kind"] for r in unique.values())),
+        "compatibility_rules_version": RULES["version"],
+        "compatibility_by_kind": {
+            kind: dict(Counter(r.get("compatibility", {}).get("status", "unknown")
+                               for r in unique.values() if r["kind"] == kind))
+            for kind in ("base", "army")
+        },
         "duplicate_origin_rows": sum(n - 1 for n in observations.values()),
         "additional_provenance_observations": len(observations) - len(unique),
         "cross_hall_shares": [

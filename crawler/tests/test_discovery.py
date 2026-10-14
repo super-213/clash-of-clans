@@ -405,6 +405,8 @@ def test_graceful_deadline_saves_pending_work_without_error():
 def test_sync_resumes_history_then_completed_pass_discovers_new_links(monkeypatch):
     from atlas.discovery import collect_source
     from atlas import adapters
+    from atlas.compatibility import checked
+    from test_compatibility import proof
 
     source = {
         **SOURCE,
@@ -422,6 +424,13 @@ def test_sync_resumes_history_then_completed_pass_discovers_new_links(monkeypatc
         }
     }
     old = {**record(1), "source_url": "https://source.example/a1"}
+    evidence = {}
+    for n in (1, 2, 3):
+        one = record(n)
+        item = next(iter(proof(one).values()))
+        item["layout_id"] = f"TH18:WB:{n}"
+        evidence[fingerprint(one)] = item
+    old = checked(old, evidence)
     known = {origin_key(old): old}
     calls = []
 
@@ -453,6 +462,7 @@ def test_sync_resumes_history_then_completed_pass_discovers_new_links(monkeypatc
         mode="sync",
         state=state,
         known=known,
+        evidence=evidence,
     )
     assert [r["title"] for r in rows] == ["Layout 2"] and start not in calls
     known.update({origin_key(r): r for r in rows})
@@ -465,6 +475,7 @@ def test_sync_resumes_history_then_completed_pass_discovers_new_links(monkeypatc
         mode="sync",
         state=state,
         known=known,
+        evidence=evidence,
     )
     assert [r["title"] for r in rows] == ["Layout 3"]
     assert calls == [
