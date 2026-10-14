@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 
 from .http import CrawlError
 from .models import make_record
+from .source_dates import source_dates
 
 
 # Illustration metadata observed in the public hero encyclopedia; never derive URLs from names.
@@ -57,7 +58,8 @@ def parse_layout(html: str, url: str, source: dict, level: int) -> dict:
     labels = {"war": "部落战", "farming": "护资源", "hybrid": "综合", "trophy": "冲杯", "general": "家乡"}
     title = f'{level} 本 · {labels[purpose]}阵型' + (f' #{serial[1]}' if serial else '')
     return make_record(source, kind="base", town_hall=level, title=title, purpose=purpose, tags=tags,
-                       game_link=link["href"] if link else None, image_url=urljoin(url, image["src"]), source_url=url)
+                       game_link=link["href"] if link else None, image_url=urljoin(url, image["src"]), source_url=url,
+                       **source_dates(soup, url))
 
 
 def parse_armies(html: str, url: str, source: dict, level: int) -> list[dict]:
@@ -99,7 +101,8 @@ def parse_armies(html: str, url: str, source: dict, level: int) -> list[dict]:
         source_url = urljoin(url, detail["href"]) if detail else url + "#" + article.get("id", "")
         records.append(make_record(source, kind="army", town_hall=level, title=title, purpose="war", tags=["兵种配图"],
                                    game_link=link["href"], image_url=units[0]["image_url"], units=units, source_url=source_url,
-                                   hero_loadouts=[clashest_loadout(img, source_url) for img in hero_images]))
+                                   hero_loadouts=[clashest_loadout(img, source_url) for img in hero_images],
+                                   **source_dates(article, source_url, page_metadata=False)))
     # Empty selectors must fail loudly; never silently report a healthy empty run.
     if not records:
         raise CrawlError("Army selectors changed or no share links found")
@@ -144,7 +147,8 @@ def parse_blueprint(html: str, url: str, source: dict, level: int) -> dict:
                          "source_url": url, "source_text": evidence, "notes": ""})
     return make_record(source, kind="army", town_hall=level, title=title.get_text(" ", strip=True),
                        purpose="war", tags=["英雄装备", "攻略配图"], game_link=link["href"],
-                       image_url=urljoin(url, image["src"]), source_url=url, hero_loadouts=loadouts)
+                       image_url=urljoin(url, image["src"]), source_url=url, hero_loadouts=loadouts,
+                       **source_dates(soup, url))
 
 
 def collect(source: dict, fetcher, levels: list[int], limit: int | None, on_error, **options) -> list[dict]:

@@ -465,6 +465,7 @@ def test_sync_resumes_history_then_completed_pass_discovers_new_links(monkeypatc
         evidence=evidence,
     )
     assert [r["title"] for r in rows] == ["Layout 2"] and start not in calls
+    assert rows[0]['first_seen_at'].endswith('Z')
     known.update({origin_key(r): r for r in rows})
     rows = collect_source(
         source,

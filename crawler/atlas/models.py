@@ -62,6 +62,7 @@ def validate_record(record: dict) -> None:
 
 def make_record(source: dict, **values) -> dict:
     record = {"village": "home", "tags": [], "units": [], "hero_loadouts": [], "source_id": source["id"],
+              "source_published_at": None, "source_updated_at": None,
               "source_name": source["name"], **values}
     validate_record(record)
     return record

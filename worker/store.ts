@@ -52,6 +52,7 @@ function hydrate(row: Record<string, unknown>, origins: EntryOrigin[]): Entry {
   return {
     ...safe,
     origins,
+    first_seen_at: row.first_seen_at ?? row.created_at,
     tags: JSON.parse(String(row.tags)),
     units: JSON.parse(String(row.units)),
     hero_loadouts: JSON.parse(String(row.hero_loadouts ?? '[]')),
@@ -67,7 +68,7 @@ export async function withOrigins(
   if (!rows.length) return [];
   const result = await db
     .prepare(
-      `SELECT p.entry_id,p.source_id,s.name AS source_name,p.source_url,p.first_seen_at,p.last_seen_at
+      `SELECT p.entry_id,p.source_id,s.name AS source_name,p.source_url,p.first_seen_at,p.last_seen_at,p.source_published_at,p.source_updated_at
      FROM provenance p JOIN sources s ON s.id=p.source_id
      WHERE p.entry_id IN (${rows.map(() => '?').join(',')})
      ORDER BY p.last_seen_at DESC,p.source_id,p.source_url`,
@@ -97,6 +98,8 @@ export async function ingest(db: D1Database, entries: EntryInput[]) {
         units: entry.units,
         hero_loadouts: entry.hero_loadouts,
         compatibility: entry.compatibility,
+        source_published_at: entry.source_published_at,
+        source_updated_at: entry.source_updated_at,
       }),
     );
     statements.push(
@@ -115,13 +118,15 @@ export async function ingest(db: D1Database, entries: EntryInput[]) {
       db
         .prepare(
           `INSERT INTO entries
-      (id,kind,village,town_hall,title,purpose,tags,game_link,image_url,units,hero_loadouts,source_id,source_url,source_name,content_hash,created_at,updated_at,last_seen_at,link_status,compatibility)
-      SELECT ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? WHERE (SELECT enabled FROM sources WHERE id=?)=1
+      (id,kind,village,town_hall,title,purpose,tags,game_link,image_url,units,hero_loadouts,source_id,source_url,source_name,content_hash,created_at,updated_at,last_seen_at,link_status,compatibility,source_published_at,source_updated_at,first_seen_at)
+      SELECT ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? WHERE (SELECT enabled FROM sources WHERE id=?)=1
       ON CONFLICT(id) DO UPDATE SET
         title=excluded.title, purpose=excluded.purpose, tags=excluded.tags,
         image_url=excluded.image_url, units=excluded.units, hero_loadouts=excluded.hero_loadouts,
         compatibility=excluded.compatibility, source_id=excluded.source_id,
         source_url=excluded.source_url, source_name=excluded.source_name,
+        source_published_at=excluded.source_published_at, source_updated_at=excluded.source_updated_at,
+        first_seen_at=MIN(COALESCE(entries.first_seen_at,entries.created_at),excluded.first_seen_at),
         updated_at=CASE WHEN entries.content_hash<>excluded.content_hash THEN excluded.updated_at ELSE entries.updated_at END,
         content_hash=excluded.content_hash, last_seen_at=excluded.last_seen_at`,
         )
@@ -146,22 +151,29 @@ export async function ingest(db: D1Database, entries: EntryInput[]) {
           now,
           entry.game_link ? 'unverified' : 'unavailable',
           JSON.stringify(entry.compatibility),
+          entry.source_published_at,
+          entry.source_updated_at,
+          entry.first_seen_at ?? now,
           entry.source_id,
         ),
     );
     statements.push(
       db
         .prepare(
-          `INSERT INTO provenance(entry_id,source_id,source_url,first_seen_at,last_seen_at)
-      SELECT ?,?,?,?,? WHERE EXISTS(SELECT 1 FROM entries WHERE id=?) AND (SELECT enabled FROM sources WHERE id=?)=1
-      ON CONFLICT(entry_id,source_id,source_url) DO UPDATE SET last_seen_at=excluded.last_seen_at`,
+          `INSERT INTO provenance(entry_id,source_id,source_url,first_seen_at,last_seen_at,source_published_at,source_updated_at)
+      SELECT ?,?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM entries WHERE id=?) AND (SELECT enabled FROM sources WHERE id=?)=1
+      ON CONFLICT(entry_id,source_id,source_url) DO UPDATE SET last_seen_at=excluded.last_seen_at,
+        first_seen_at=MIN(provenance.first_seen_at,excluded.first_seen_at),
+        source_published_at=excluded.source_published_at,source_updated_at=excluded.source_updated_at`,
         )
         .bind(
           id,
           entry.source_id,
           entry.source_url,
+          entry.first_seen_at ?? now,
           now,
-          now,
+          entry.source_published_at,
+          entry.source_updated_at,
           id,
           entry.source_id,
         ),

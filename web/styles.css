@@ -445,6 +445,26 @@ select option {
   gap: 8px;
   margin-top: 10px;
 }
+.entry-times {
+  margin: 12px 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+.entry-times > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 12px;
+}
+.entry-times dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.entry-times.compact {
+  margin: 7px 0 0;
+  font-size: 12px;
+  line-height: 1.7;
+}
 .copy-button,
 .game-button {
   display: inline-flex;
@@ -1207,7 +1227,7 @@ dialog::backdrop {
     padding-inline: 11px;
   }
   .filter-row {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 16px;
   }

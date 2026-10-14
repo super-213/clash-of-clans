@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { ingestSchema } from '../shared/schema';
 import { catalogLevelsSql, compatibleContentSql, digest, withOrigins, ingest } from './store';
 import { cachedPublicJson, invalidatePublicCache } from './cache';
+import { entrySortKeys, entrySorts, normalizeSort } from '../shared/entry-sort';
 
 export type Env = {
   DB: D1Database;
@@ -74,7 +75,7 @@ const listSchema = z.object({
   q: z.string().max(100).optional(),
   page: z.coerce.number().int().min(1).max(10000).default(1),
   limit: z.coerce.number().int().min(1).max(48).default(12),
-  sort: z.enum(['latest', 'oldest']).default('latest'),
+  sort: z.enum([...entrySortKeys, 'latest', 'oldest']).default('discovered_desc'),
 });
 
 app.get('/api/health', async (c) => {
@@ -106,13 +107,16 @@ app.get('/api/entries', async (c) => {
   const parsed = listSchema.safeParse(c.req.query());
   if (!parsed.success) return c.json({ error: 'Invalid filters' }, 400);
   const { kind, village, th, purpose, q, page, limit, sort } = parsed.data;
+  const normalizedSort = normalizeSort(sort);
+  const order = entrySorts[normalizedSort];
+  const timeColumn = order.field === 'first_seen_at' ? 'COALESCE(first_seen_at,created_at)' : order.field;
   // Defaults, parameter ordering and unrelated tracking parameters share a key.
   const filters = new URLSearchParams({
     kind,
     village,
     page: String(page),
     limit: String(limit),
-    sort,
+    sort: normalizedSort,
   });
   if (th) filters.set('th', String(th));
   if (purpose) filters.set('purpose', purpose);
@@ -142,7 +146,8 @@ app.get('/api/entries', async (c) => {
     const where = clauses.join(' AND ');
     const [rows, total] = await c.env.DB.batch<Record<string, unknown>>([
       c.env.DB.prepare(
-        `SELECT * FROM entries WHERE ${where} ORDER BY updated_at ${sort === 'latest' ? 'DESC' : 'ASC'}, town_hall DESC, id ASC LIMIT ? OFFSET ?`,
+        `SELECT * FROM entries WHERE ${where} ORDER BY ${timeColumn} IS NULL ASC,
+          julianday(${timeColumn}) ${order.direction}, town_hall DESC, id ASC LIMIT ? OFFSET ?`,
       ).bind(...values, limit, (page - 1) * limit),
       c.env.DB.prepare(
         `SELECT COUNT(*) AS total FROM entries WHERE ${where}`,

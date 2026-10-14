@@ -4,7 +4,7 @@ import rules from '../shared/game-rules.json';
 
 type ApiContext = Context<{ Bindings: Env }>;
 // Bump this prefix when the public response contract changes.
-const prefix = `/__atlas-cache/v2/${rules.version}/`;
+const prefix = `/__atlas-cache/v3/${rules.version}/`;
 
 function cacheKey(c: ApiContext, key: string) {
   return new Request(new URL(prefix + key, c.req.url));

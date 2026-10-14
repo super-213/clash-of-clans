@@ -12,6 +12,8 @@ const imageUrl = z.union([
   httpsUrl,
   z.string().regex(/^\/media\/[a-f0-9]{64}\.(webp|png|jpg)$/),
 ]);
+const sourceDate = z.union([z.iso.date(), z.iso.datetime()])
+  .transform(value => value.length === 10 ? value : new Date(value).toISOString());
 export const unitSchema = z.object({
   name: z.string().min(1).max(100),
   count: z.number().int().min(1).max(1000),
@@ -60,6 +62,9 @@ export const entrySchema = z
     source_id: z.string().regex(/^[a-z0-9-]{1,60}$/),
     source_url: httpsUrl,
     source_name: z.string().min(1).max(100),
+    source_published_at: sourceDate.nullable().default(null),
+    source_updated_at: sourceDate.nullable().default(null),
+    first_seen_at: z.iso.datetime().transform(value => new Date(value).toISOString()).nullable().default(null),
     units: z.array(unitSchema).max(100).default([]),
     hero_loadouts: z.array(heroLoadoutSchema).max(8).default([]),
     compatibility: compatibilitySchema.default({
@@ -123,11 +128,14 @@ export type EntryOrigin = {
   source_url: string;
   first_seen_at: string;
   last_seen_at: string;
+  source_published_at: string | null;
+  source_updated_at: string | null;
 };
 export type Entry = EntryInput & {
   origins: EntryOrigin[];
   id: string;
   created_at: string;
+  first_seen_at: string;
   updated_at: string;
   last_seen_at: string;
   link_status:

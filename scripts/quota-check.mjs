@@ -18,7 +18,7 @@ try {
     envFiles: [],
   });
   const db = proxy.env.DB;
-  for (const file of ['0001_initial.sql', '0002_hero_loadouts.sql', '0003_compatibility.sql']) {
+  for (const file of ['0001_initial.sql', '0002_hero_loadouts.sql', '0003_compatibility.sql', '0004_source_dates.sql']) {
     const sql = (
       await readFile(new URL('../migrations/' + file, import.meta.url), 'utf8')
     ).replace(/^--.*$/gm, '');

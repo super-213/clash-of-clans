@@ -3,6 +3,7 @@ import type { Entry } from '../../shared/schema';
 import { fullDate, purposes } from '../format';
 import { Picture, UnitStrip, Dialog } from './Media';
 import { HeroLoadouts } from './HeroLoadouts';
+import { EntryTimes } from './EntryTimes';
 
 export function EntryDetail({
   selected,
@@ -59,6 +60,7 @@ export function EntryDetail({
           TH {selected.town_hall} / {purposes[selected.purpose]}
         </span>
         <h2>{selected.title}</h2>
+        <EntryTimes entry={selected} />
         {selected.kind === 'army' && (
           <p>分享链接可能不含完整英雄搭配，请在游戏内核对。</p>
         )}
@@ -103,7 +105,7 @@ export function EntryDetail({
           <summary>
             来源与收录记录 <span>{selected.origins.length} 个出处</span>
           </summary>
-          <p>内容更新于 {fullDate(selected.updated_at)}，以下为本站采集时间。</p>
+          <p>来源时间属于对应网页，不是游戏链接创建时间，也不作为版本判断依据。</p>
           {selected.game_link && (
             <label className="link-field">
               原始分享链接
@@ -141,7 +143,15 @@ export function EntryDetail({
                 </a>
                 <dl>
                   <div>
-                    <dt>首次采集</dt>
+                    <dt>来源发布时间</dt>
+                    <dd>{fullDate(origin.source_published_at)}</dd>
+                  </div>
+                  <div>
+                    <dt>来源更新时间</dt>
+                    <dd>{fullDate(origin.source_updated_at)}</dd>
+                  </div>
+                  <div>
+                    <dt>本站首次发现此出处</dt>
                     <dd>
                       <time dateTime={origin.first_seen_at}>
                         {fullDate(origin.first_seen_at)}

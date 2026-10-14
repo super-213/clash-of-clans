@@ -1,4 +1,5 @@
 import type { Entry } from '../shared/schema';
+import { entrySorts, normalizeSort } from '../shared/entry-sort';
 
 type CachedEntry = { entry: Entry | null; expires: number };
 type FetchBatch = (ids: string[]) => Promise<Entry[]>;
@@ -97,11 +98,18 @@ export function selectSavedEntries(
           .toLowerCase()
           .includes(query.toLowerCase())),
   );
-  filtered.sort((a, b) =>
-    sort === 'latest'
-      ? b.updated_at.localeCompare(a.updated_at)
-      : a.updated_at.localeCompare(b.updated_at),
-  );
+  const order = entrySorts[normalizeSort(sort)];
+  const timestamp = (entry: Entry) => {
+    const value = order.field === 'first_seen_at' ? entry.first_seen_at ?? entry.created_at : entry[order.field];
+    return value ? Date.parse(value) : NaN;
+  };
+  filtered.sort((a, b) => {
+    const left = timestamp(a), right = timestamp(b);
+    if (Number.isNaN(left) !== Number.isNaN(right)) return Number.isNaN(left) ? 1 : -1;
+    const difference = Number.isNaN(left) ? 0 : left - right;
+    return difference * (order.direction === 'DESC' ? -1 : 1) ||
+      b.town_hall - a.town_hall || a.id.localeCompare(b.id);
+  });
   return {
     items: filtered.slice((page - 1) * pageSize, page * pageSize),
     total: filtered.length,

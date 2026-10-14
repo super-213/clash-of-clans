@@ -30,6 +30,8 @@ for (const entry of snapshot.entries) {
       units: entry.units,
       hero_loadouts: entry.hero_loadouts ?? [],
       compatibility: entry.compatibility ?? { status: 'unknown', rules_version: null, reasons: ['not_checked'], evidence_url: null },
+      source_published_at: entry.source_published_at ?? null,
+      source_updated_at: entry.source_updated_at ?? null,
     }),
   );
   sql.push(
@@ -56,6 +58,9 @@ for (const entry of snapshot.entries) {
     'last_seen_at',
     'link_status',
     'compatibility',
+    'source_published_at',
+    'source_updated_at',
+    'first_seen_at',
   ];
   const values = [
     id,
@@ -78,18 +83,25 @@ for (const entry of snapshot.entries) {
     now,
     entry.game_link ? 'unverified' : 'unavailable',
     JSON.stringify(entry.compatibility ?? { status: 'unknown', rules_version: null, reasons: ['not_checked'], evidence_url: null }),
+    entry.source_published_at ?? null,
+    entry.source_updated_at ?? null,
+    entry.first_seen_at ?? now,
   ];
   sql.push(
     `INSERT INTO entries(${fields}) VALUES(${values.map(quote)}) ON CONFLICT(id) DO UPDATE SET
       title=excluded.title,purpose=excluded.purpose,tags=excluded.tags,
       image_url=excluded.image_url,units=excluded.units,hero_loadouts=excluded.hero_loadouts,
       compatibility=excluded.compatibility,
+      source_published_at=excluded.source_published_at,source_updated_at=excluded.source_updated_at,
+      first_seen_at=MIN(COALESCE(entries.first_seen_at,entries.created_at),excluded.first_seen_at),
       source_id=excluded.source_id,source_url=excluded.source_url,source_name=excluded.source_name,
       updated_at=CASE WHEN entries.content_hash<>excluded.content_hash THEN excluded.updated_at ELSE entries.updated_at END,
       content_hash=excluded.content_hash,last_seen_at=excluded.last_seen_at;`,
   );
   sql.push(
-    `INSERT INTO provenance(entry_id,source_id,source_url,first_seen_at,last_seen_at) VALUES(${[id, entry.source_id, entry.source_url, now, now].map(quote)}) ON CONFLICT(entry_id,source_id,source_url) DO UPDATE SET last_seen_at=excluded.last_seen_at;`,
+    `INSERT INTO provenance(entry_id,source_id,source_url,first_seen_at,last_seen_at,source_published_at,source_updated_at) VALUES(${[id, entry.source_id, entry.source_url, entry.first_seen_at ?? now, now, entry.source_published_at ?? null, entry.source_updated_at ?? null].map(quote)}) ON CONFLICT(entry_id,source_id,source_url) DO UPDATE SET last_seen_at=excluded.last_seen_at,
+      first_seen_at=MIN(provenance.first_seen_at,excluded.first_seen_at),
+      source_published_at=excluded.source_published_at,source_updated_at=excluded.source_updated_at;`,
   );
 }
 for (const run of snapshot.runs || []) {

@@ -17,6 +17,7 @@ from .http import Fetcher
 from .snapshot import origin_key, atomic_json
 from .publish import ImageMirror, Publisher
 from .compatibility import checked, load_evidence, RULES
+from .source_dates import backfill_cached_dates
 
 
 def now():
@@ -69,7 +70,7 @@ def main():
     parser.add_argument("--layout-evidence", type=Path,
                         default=Path(__file__).resolve().parents[1] / "layout-evidence.json")
     parser.add_argument("--recheck-only", action="store_true",
-                        help="Reassess existing snapshot and optionally publish; do not crawl")
+                        help="Reassess snapshot and fill missing source dates from cache; do not crawl")
     args = parser.parse_args()
     if args.limit is not None and args.limit < 0:
         parser.error("--limit must be nonnegative")
@@ -97,6 +98,8 @@ def main():
         else {"entries": [], "runs": []}
     )
     evidence = load_evidence(args.layout_evidence)
+    if args.recheck_only:
+        previous["entries"] = backfill_cached_dates(previous["entries"], args.cache, sources)
     entries = {origin_key(e): checked(e, evidence) for e in previous["entries"]}
     state_path = (
         Path(args.state) if args.state else output.with_name("crawl-state.json")
@@ -209,6 +212,12 @@ def main():
             nonlocal accepted, state
             batch = [checked(record, evidence) for record in batch]
             for record in batch:
+                key = origin_key(record)
+                previous_record = entries.get(key)
+                if previous_record and previous_record.get("first_seen_at"):
+                    record["first_seen_at"] = previous_record["first_seen_at"]
+                elif previous_record is None:
+                    record.setdefault("first_seen_at", now())
                 if mirror:
                     record["image_url"] = mirror.mirror(record["image_url"], fetcher)
                     for unit in record["units"]:

@@ -7,6 +7,7 @@ from urllib.parse import parse_qs, unquote, urljoin, urlsplit
 from bs4 import BeautifulSoup
 from .http import CrawlError
 from .models import make_record
+from .source_dates import source_dates
 
 
 def hall_pages(html: str, url: str, adapter: str) -> dict[int, str]:
@@ -154,7 +155,8 @@ def parse_clashcodes(html: str, url: str, source: dict, level: int) -> list[dict
                 )
     if not records:
         raise CrawlError("Clashcodes image/share pairing selectors changed")
-    return records
+    dates = source_dates(soup, url)
+    return [{**record, **dates} for record in records]
 
 
 def parse_clashbaselink(html: str, url: str, source: dict, level: int) -> list[dict]:
@@ -183,4 +185,5 @@ def parse_clashbaselink(html: str, url: str, source: dict, level: int) -> list[d
             image = None
     if not records:
         raise CrawlError("ClashBaseLink share/image selectors changed")
-    return records
+    dates = source_dates(soup, url)
+    return [{**record, **dates} for record in records]

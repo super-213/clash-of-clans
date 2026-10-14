@@ -170,4 +170,7 @@ def test_legacy_database_rows_are_quarantined_without_deleting_provenance():
     assert json.loads(row[0])['status'] == 'unknown'
     assert row[1] == 'confirmed'
     assert db.execute('SELECT COUNT(*) FROM provenance').fetchone()[0] == 1
+    db.executescript((migrations / '0004_source_dates.sql').read_text())
+    assert db.execute('SELECT first_seen_at,source_published_at,source_updated_at FROM entries').fetchone() == ('old', None, None)
+    assert db.execute('SELECT source_published_at,source_updated_at FROM provenance').fetchone() == (None, None)
     db.close()

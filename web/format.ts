@@ -51,8 +51,10 @@ export const date = (value: string | null) =>
       }).format(new Date(value))
     : '尚未采集';
 export const unitName = (unit: Unit) => unitNames[unit.name] || unit.name;
-export const fullDate = (value: string) =>
-  new Intl.DateTimeFormat('zh-CN', {
+export function fullDate(value: string | null | undefined): string {
+  if (!value || Number.isNaN(Date.parse(value))) return '未提供';
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value.replaceAll('-', '/') + '（仅日期）';
+  return new Intl.DateTimeFormat('zh-CN', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
@@ -61,3 +63,11 @@ export const fullDate = (value: string) =>
     second: '2-digit',
     timeZone: 'Asia/Shanghai',
   }).format(new Date(value)) + '（北京时间）';
+}
+export function shortDate(value: string | null | undefined): string {
+  if (!value || Number.isNaN(Date.parse(value))) return '未提供';
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value.replaceAll('-', '/');
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric', month: '2-digit', day: '2-digit', timeZone: 'Asia/Shanghai',
+  }).format(new Date(value));
+}

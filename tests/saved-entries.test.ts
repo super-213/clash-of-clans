@@ -12,9 +12,26 @@ const entry = (i: number) =>
     title: `资料 ${i}`,
     tags: ['测试'],
     updated_at: String(i).padStart(4, '0'),
+    first_seen_at: new Date(Date.UTC(2026, 0, 1) + i * 86400_000).toISOString(),
+    source_published_at: null,
+    source_updated_at: null,
   }) as Entry;
 
 describe('saved collection loading', () => {
+  it('sorts by the selected time with unknown dates last in either direction', () => {
+    const entries = [
+      { ...entry(1), source_published_at: '2026-10-01', source_updated_at: '2026-10-03' },
+      { ...entry(2), source_published_at: null, source_updated_at: null },
+      { ...entry(3), source_published_at: '2026-09-01', source_updated_at: '2026-10-10' },
+    ];
+    const filters = { kind: 'base', hall: 18, purpose: 'all', query: '', sort: 'published_desc', page: 1, pageSize: 12 };
+    const ids = (sort: string) => selectSavedEntries(entries, { ...filters, sort }).items.map(x => x.id);
+    expect(ids('published_desc')).toEqual([id(1), id(3), id(2)]);
+    expect(ids('published_asc')).toEqual([id(3), id(1), id(2)]);
+    expect(ids('source_updated_desc')).toEqual([id(3), id(1), id(2)]);
+    expect(ids('source_updated_asc')).toEqual([id(1), id(3), id(2)]);
+    expect(ids('discovered_desc')).toEqual([id(3), id(2), id(1)]);
+  });
   it('loads 200 entries in three batches and filters/pages without more requests', async () => {
     const load = vi.fn(async (ids: string[]) =>
       ids.map((key) => entry(parseInt(key, 16))),

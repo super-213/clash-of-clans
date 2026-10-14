@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from datetime import datetime, timezone
 from functools import lru_cache
 from .http import CrawlError
 from .models import fingerprint
@@ -171,6 +172,16 @@ def collect_source(
     adapter = source["adapter"]
     active = [level for level in levels if level in source["levels"]]
     navigation = {}
+
+    def observe(record):
+        record = checked(record, evidence)
+        key = origin_key(record)
+        previous = (known or {}).get(key)
+        if previous is None:
+            record["first_seen_at"] = datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
+        elif previous.get("first_seen_at"):
+            record["first_seen_at"] = previous["first_seen_at"]
+        return record
     if adapter in ("clashcodes", "clashbaselink") and active:
         navigation = hall_pages(
             fetch(source["index_url"]), source["index_url"], adapter
@@ -259,7 +270,7 @@ def collect_source(
             skip_urls=skip_urls,
             checkpoint=commit,
             should_stop=should_stop,
-            transform=lambda record: checked(record, evidence),
+            transform=observe,
         )
         results.extend(found)
         if mode != "incremental":

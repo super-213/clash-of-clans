@@ -2,6 +2,7 @@ import { ArrowUpRight, Copy, Heart } from 'lucide-react';
 import type { Entry } from '../../shared/schema';
 import { purposes } from '../format';
 import { Picture, UnitStrip } from './Media';
+import { EntryTimes } from './EntryTimes';
 
 export function EntryCard({
   entry,
@@ -73,6 +74,7 @@ export function EntryCard({
             <span key={tag}>{tag}</span>
           ))}
         </div>
+        <EntryTimes entry={entry} compact />
         <div className="entry-actions">
           <button
             className="copy-button"

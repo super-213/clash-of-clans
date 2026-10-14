@@ -22,6 +22,7 @@ import { Dialog } from './components/Media';
 import { EntryCard } from './components/EntryCard';
 import { EntryDetail } from './components/EntryDetail';
 import { SavedEntryStore, selectSavedEntries } from './saved-entries';
+import { entrySorts, normalizeSort, type EntrySort } from '../shared/entry-sort';
 
 async function api<T>(path: string, signal?: AbortSignal): Promise<T> {
   const response = await fetch(path, { signal });
@@ -62,7 +63,7 @@ export function App() {
   const [purpose, setPurpose] = useState(initial.get('purpose') || 'all');
   const [search, setSearch] = useState(initial.get('q') || '');
   const [query, setQuery] = useState(search);
-  const [sort, setSort] = useState('latest');
+  const [sort, setSort] = useState<EntrySort>(normalizeSort(initial.get('sort')));
   const [page, setPage] = useState(1);
   const [catalog, setCatalog] = useState<Catalog | null>(null);
   const [listItems, setItems] = useState<Entry[]>([]);
@@ -120,6 +121,7 @@ export function App() {
     if (hall) params.set('th', String(hall));
     if (purpose !== 'all') params.set('purpose', purpose);
     if (query) params.set('q', query);
+    params.set('sort', sort);
     history.replaceState(null, '', '?' + params);
     if (savedOnly) return;
     const controller = new AbortController();
@@ -419,12 +421,13 @@ export function App() {
                 aria-label="排序"
                 value={sort}
                 onChange={(e) => {
-                  setSort(e.target.value);
+                  setSort(normalizeSort(e.target.value));
                   setPage(1);
                 }}
               >
-                <option value="latest">最近收录</option>
-                <option value="oldest">最早收录</option>
+                {Object.entries(entrySorts).map(([value, order]) => (
+                  <option key={value} value={value}>{order.label}</option>
+                ))}
               </select>
               <ChevronDown size={13} />
             </label>

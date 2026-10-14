@@ -141,6 +141,7 @@ levels=[18]
     snapshot = json.loads(output.read_text())
     assert len(snapshot["entries"]) == 2
     assert len(snapshot["publication"]["records"]) == 1
+    assert snapshot['entries'][0]['first_seen_at'].endswith('Z')
 
 
 def test_recheck_only_updates_old_receipts_without_crawling(tmp_path, monkeypatch):

@@ -372,8 +372,45 @@ try {
   assert.ok(changed.updated_at > armyFirst.updated_at);
   assert.equal(changed.link_status, 'reported');
   assert.equal(changed.created_at, armyFirst.created_at);
+  const dated = [
+    { label: 'A', source_published_at: '2026-10-01', source_updated_at: '2026-10-03', first_seen_at: '2026-09-03T00:00:00.000Z' },
+    { label: 'B', source_published_at: null, source_updated_at: null, first_seen_at: '2026-09-02T00:00:00.000Z' },
+    { label: 'C', source_published_at: '2026-09-01', source_updated_at: '2026-10-10', first_seen_at: '2026-09-01T00:00:00.000Z' },
+  ].map(({ label, ...times }) => ({ ...entry, ...times, source_id: 'dates-source',
+    source_name: 'Dates Source', title: '时间测试 ' + label,
+    game_link: entry.game_link + '-dates-' + label, source_url: 'https://dates.example/' + label }));
+  assert.equal((await request('/api/ingest/entries', { entries: dated })).status, 200);
+  const dateList = async (sort, page = 1, limit = 12) => (await fetch(root + '/api/entries?' + new URLSearchParams({
+    q: '时间测试', sort, page: String(page), limit: String(limit),
+  }))).json();
+  for (const [sort, labels] of [
+    ['published_desc', ['A', 'C', 'B']], ['published_asc', ['C', 'A', 'B']],
+    ['source_updated_desc', ['C', 'A', 'B']], ['source_updated_asc', ['A', 'C', 'B']],
+    ['discovered_desc', ['A', 'B', 'C']], ['discovered_asc', ['C', 'B', 'A']],
+    ['latest', ['A', 'B', 'C']], ['oldest', ['C', 'B', 'A']],
+  ]) assert.deepEqual((await dateList(sort)).items.map(x => x.title.slice(-1)), labels);
+  assert.equal((await dateList('published_desc', 2, 1)).items[0].title, '时间测试 C');
+  assert.equal((await fetch(root + '/api/entries?sort=untrusted_column')).status, 400);
+  const datedFirst = (await dateList('discovered_desc')).items[0];
+  assert.equal(datedFirst.source_published_at, '2026-10-01');
+  assert.equal(datedFirst.first_seen_at, '2026-09-03T00:00:00.000Z');
+  assert.equal(datedFirst.origins[0].source_updated_at, '2026-10-03');
+  await request('/api/ingest/entries', { entries: [{ ...dated[0], first_seen_at: '2026-10-14T00:00:00Z' }] });
+  let datedDetail = await (await fetch(root + '/api/entries/' + datedFirst.id)).json();
+  assert.equal(datedDetail.first_seen_at, datedFirst.first_seen_at);
+  assert.equal(datedDetail.updated_at, datedFirst.updated_at);
+  await request('/api/ingest/entries', { entries: [{ ...dated[0], source_id: 'dates-second',
+    source_name: 'Second date source', source_url: 'https://dates-second.example/A',
+    source_published_at: '2026-08-01', source_updated_at: '2026-10-12', first_seen_at: '2026-09-02T00:00:00Z' }] });
+  datedDetail = await (await fetch(root + '/api/entries/' + datedFirst.id)).json();
+  assert.equal(datedDetail.source_published_at, '2026-08-01');
+  assert.equal(datedDetail.first_seen_at, '2026-09-02T00:00:00.000Z');
+  assert.equal(datedDetail.created_at, datedFirst.created_at);
+  assert.equal(datedDetail.origins.find(x => x.source_id === 'dates-source').source_published_at, '2026-10-01');
+  assert.equal(datedDetail.origins.find(x => x.source_id === 'dates-source').first_seen_at, datedFirst.first_seen_at);
+  assert.equal(datedDetail.compatibility.status, 'compatible'); // Old article dates never retire a share.
   console.log(
-    'PASS: associated hero/pet/equipment ingestion, updates, legacy defaults, and real D1 migrations, authentication, validation, search, pagination parameters, deduplication, multi-source provenance, timestamps, moderation, source disable, run idempotency and API routing.',
+    'PASS: all six date sorts, missing dates last, pagination, source-specific dates, preserved first observation, compatibility independent of dates, and existing D1/auth/ingestion/provenance/moderation contracts.',
   );
 } finally {
   if (server && server.exitCode === null) {

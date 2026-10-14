@@ -107,3 +107,16 @@ uv run --directory crawler --frozen python -m atlas --recheck-only --publish
 ```
 
 Actions 的来源快照分别保存在 `data/<source-id>/`，手动核验这些快照时指定对应 `--output` 和 `--cache`。新旧 Worker/爬虫不要交错发布：旧爬虫没有兼容性结论，重新入库会把该记录置为待核验。配置建筑证据与更新游戏规则的方法参见采集维护手册“当前版本兼容性”。本次代码调整未执行生产迁移或部署。
+
+## 来源时间字段升级
+
+先应用 `0004_source_dates.sql`，再部署 Worker/前端，最后运行新版爬虫或从已有缓存回填日期。该迁移为资料和每个出处增加两个来源时间字段，为资料增加本站首次发现时间；历史首次发现沿用原始首次收录时间，来源日期保持未知，等待源网页证据补齐。重复采集保留首次发现，各出处日期分别更新。
+
+```bash
+npx wrangler d1 migrations apply village-atlas --remote
+npm run deploy
+# 使用对应来源已有快照和 HTML 缓存，无网络采集；确认目标配置后同步
+uv run --directory crawler --frozen python -m atlas --recheck-only --publish
+```
+
+公开缓存路径已升级至 v3，避免旧响应缺少时间字段。日期仅用于展示与排序，不会放行待核验内容或改变兼容性结论。前端提供三类时间的双向排序，未知日期始终排末尾，收藏也使用相同规则。未提供时区的来源时间仅展示其日期；不会标成精确的北京时间。
